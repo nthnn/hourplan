@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+@font-face {
+    font-family: "Lazydog";
+    src: url("@/assets/fonts/lazydog.ttf");
+}
+
+* {
+    font-family: "Lazydog" !important;
+    text-transform: none;
+}
+
+.text-lato {
+    font-family: "Lato", sans-serif !important;
+    text-transform: none !important;
+}
+
+.clr-primary {
+    background-color: #1a172a !important;
+}
+
+.clr-secondary {
+    background-color: #EBB797 !important;
+}
+
+.brdr-secondary {
+    border-color: #f7ae81 !important;
+}
+
+.outlined-secondary {
+    border-top: 2px !important;
+    border-left: 2px !important;
+    border-right: 2px !important;
+    border-style: solid !important;
+    border-radius: 6px !important;
+    border-color: #f7ae81 !important;
+    background-color: white !important;
+}
+
+.hp-navbar {
+    border-bottom-left-radius: 36px;
+    border-bottom-right-radius: 36px;
+}
