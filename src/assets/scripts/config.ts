@@ -1,6 +1,5 @@
 const env = {
-    //host: "http://localhost/hourplan",
-    host: "http://hourplan.000.pe"
+    host: "http://localhost/hourplan"
 };
 
 export default env;
