@@ -111,7 +111,7 @@ function login() {
     }
 
     .login-form {
-        margin-top: -105px;
+        margin-top: -125px;
     }
 
     #left-hand {
