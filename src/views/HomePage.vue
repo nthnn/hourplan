@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import $ from "jquery";
+import env from "../assets/scripts/config";
 import Navbar from "../components/Navbar.vue";
 import {
     validateCurrentSession
@@ -10,7 +11,7 @@ setInterval(validateCurrentSession, 1000);
 
 setTimeout(()=> {
     $("#home-route").addClass("selected-menu");
-    $("#username").html(localStorage.getItem('username'));
+    $("#username").html(localStorage.getItem('username') as string);
 
     $("#logout-route").click(()=> {
         $.post(
