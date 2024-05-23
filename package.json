@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
+    "clean": "if exist dist rd /s /q dist",
+    "build": "npm run clean && run-p type-check \"build-only {@}\" -- && npm run misc-copy",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "misc-copy": "copy .htaccess dist\\ && copy backend\\ dist\\ && mkdir dist\\lib && copy backend\\lib\\ dist\\lib\\"
   },
   "dependencies": {
     "animate.css": "^4.1.1",
