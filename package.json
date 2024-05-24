@@ -14,11 +14,13 @@
     "misc-copy": "copy .htaccess dist\\ && copy backend\\ dist\\ && mkdir dist\\lib && copy backend\\lib\\ dist\\lib\\"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "animate.css": "^4.1.1",
     "bootstrap": "^5.3.3",
     "bootswatch": "^5.3.3",
     "jquery": "^3.7.1",
     "md5": "^2.3.0",
+    "v-calendar": "^3.1.2",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },
