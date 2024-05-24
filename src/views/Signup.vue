@@ -5,13 +5,16 @@ import $ from "jquery";
 import env from "@/assets/scripts/config";
 import md5 from "md5";
 
-import { RouterLink } from "vue-router";
+import { useRouter, RouterLink, useRoute } from "vue-router";
 import {
     validateSession
 } from "@/assets/scripts/session";
 
-validateSession();
-setInterval(validateSession, 1000);
+const router = useRouter();
+const route = useRoute();
+
+validateSession(router, route);
+setInterval(()=> validateSession(router, route), 1000);
 
 function signup() {
     const username = $("#username").val();
@@ -38,7 +41,7 @@ function signup() {
                 $("#signup-error").removeClass("d-block");
                 $("#signup-error").addClass("d-none");
 
-                location.href = "/home";
+                router.push("/home");
                 return;
             }
 
