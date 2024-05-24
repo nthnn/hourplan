@@ -1,5 +1,33 @@
 <script setup lang="ts">
 import "../assets/styles/global.css";
+
+import $ from "jquery";
+import env from "../assets/scripts/config";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+setTimeout(()=> {
+    $("#" + (route.name as string) + "-route").addClass("selected-menu");
+    $("#mb-" + (route.name as string) + "-route").addClass("menu-selected");
+    $("#username").html(localStorage.getItem('username') as string);
+
+    $("#logout-route").click(()=> {
+        $.post(
+            env.host + "/account.php",
+            {
+                action: "logout",
+                hash: localStorage.getItem("hash")
+            },
+            (data)=> {
+                if(data.status == 1) {
+                    localStorage.setItem("username", "null");
+                    localStorage.setItem("theme", "null");
+                    localStorage.setItem("hash", "null");
+                }
+            }
+        );
+    });
+}, 300);
 </script>
 
 <template>
@@ -13,7 +41,7 @@ import "../assets/styles/global.css";
             <div class="col-6" align="right">
                 <div class="mx-3">
                     <RouterLink class="text-white text-lato mx-3 menu" id="home-route" to="/home">Home</RouterLink>
-                    <RouterLink class="text-white text-lato mx-3 menu" id="todo-route" to="/todo-list">To-Do List</RouterLink>
+                    <RouterLink class="text-white text-lato mx-3 menu" id="todo-list-route" to="/todo-list">To-Do List</RouterLink>
                     <RouterLink class="text-white text-lato mx-3 menu" id="calendar-route" to="/calendar">Calendar</RouterLink>
                     <span class="text-white text-lato mx-3 menu" id="logout-route">Log-out</span>
 
