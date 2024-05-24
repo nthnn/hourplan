@@ -11,6 +11,7 @@ setInterval(validateCurrentSession, 1000);
 
 setTimeout(()=> {
     $("#home-route").addClass("selected-menu");
+    $("#mb-home-route").addClass("menu-selected");
     $("#username").html(localStorage.getItem('username') as string);
 
     $("#logout-route").click(()=> {
@@ -46,5 +47,12 @@ setTimeout(()=> {
     border-color: white;
     border-style: solid;
     border-width: 1px;
+}
+
+.menu-selected {
+    padding-bottom: 12px;
+    border-style: solid;
+    border-color: white;
+    border-width: 0px 0px 4px 0px !important;
 }
 </style>
