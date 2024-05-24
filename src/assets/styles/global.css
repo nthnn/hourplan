@@ -15,7 +15,11 @@
     text-transform: none !important;
 }
 
-.clr-primary {
+.vc-highlight-bg-solid {
+    padding: 16px !important;
+}
+
+.clr-primary, .vc-highlight-bg-solid {
     background-color: #1a172a !important;
 }
 
