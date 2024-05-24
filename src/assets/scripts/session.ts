@@ -1,6 +1,6 @@
 import $ from "jquery";
 import env from "@/assets/scripts/config";
-import Session from "@/assets/scripts/user";
+import { type Router, type RouteLocationNormalizedLoaded } from "vue-router";
 import {
     validateUuid
 } from "@/assets/scripts/validator";
@@ -10,9 +10,9 @@ function checkSession() {
     return hash != "null";
 }
 
-function validateCurrentSession() {
+function validateCurrentSession(router: Router) {
     if(!checkSession()) {
-        location.href = "/";
+        router.push("/login");
         return;
     }
 
@@ -28,14 +28,14 @@ function validateCurrentSession() {
                 localStorage.setItem("theme", "null");
                 localStorage.setItem("hash", "null");
 
-                location.href = "/";
+                router.push("/login");
                 return;
             }
         }
     );
 }
 
-function validateSession() {
+function validateSession(router: Router, routeLoc: RouteLocationNormalizedLoaded) {
     const hash: string = localStorage.getItem("hash") as string;
     if(hash == "null" || !validateUuid(hash))
         return;
@@ -51,11 +51,14 @@ function validateSession() {
                 localStorage.setItem("username", data.username);
                 localStorage.setItem("theme", data.theme);
 
-                location.href = "/home";
+                router.push("/home");
                 return;
             }
 
-            location.href = "/";
+            console.log(routeLoc.name);
+            console.log(routeLoc.name != "login");
+            if(routeLoc.name != "login")
+                router.push("/login");
         }
     );
 }
