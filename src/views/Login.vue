@@ -5,13 +5,16 @@ import $ from "jquery";
 import env from "@/assets/scripts/config";
 import md5 from "md5";
 
-import { RouterLink } from "vue-router";
+import { useRouter, RouterLink, useRoute } from "vue-router";
 import {
     validateSession
 } from "@/assets/scripts/session";
 
-validateSession();
-setInterval(validateSession, 1000);
+const router = useRouter();
+const route = useRoute();
+
+validateSession(router, route);
+setInterval(()=> validateSession(router, route), 1000);
 
 function login() {
     const username = $("#username").val();
@@ -36,7 +39,7 @@ function login() {
                 $("#login-error").removeClass("d-block");
                 $("#login-error").addClass("d-none");
 
-                location.href = "/home";
+                router.push("/home");
                 return;
             }
 
@@ -68,13 +71,7 @@ function login() {
                 <input type="text" placeholder="Username" class="form-control mt-4 text-lato" id="username" />
                 <input type="password" placeholder="Password" class="form-control mt-2 text-lato" id="password" />
                 <p class="text-danger mt-2 d-none animate__animated text-lato" id="login-error"></p>
-
-                <small>
-                    <RouterLink 
-                        class="text-white text-decoration-none text-lato"
-                        to="/forgot-password">Forgot password?</RouterLink>
-                </small>
-                <br/><br/>
+                <br/>
 
                 <button
                     class="btn btn-warning clr-secondary brdr-secondary text-dark text-lato w-100"
