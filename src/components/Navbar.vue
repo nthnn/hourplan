@@ -31,7 +31,7 @@ setTimeout(()=> {
 </script>
 
 <template>
-    <div class="clr-primary hp-navbar p-3 d-fixed desktop-only">
+    <div class="clr-primary hp-navbar p-3 d-fixed fixed-top desktop-only">
         <div class="row">
             <div class="col-6 mt-1">
                 <img src="@/assets/images/profile-placeholder.png" class="mx-4" width="36" />
@@ -51,7 +51,7 @@ setTimeout(()=> {
         </div>
     </div>
 
-    <div class="clr-primary hp-navbar pt-3 pl-3 pr-3 d-fixed mobile-only" id="mb-navbar">
+    <div class="clr-primary hp-navbar pt-3 pl-3 pr-3 d-fixed fixed-top mobile-only" id="mb-navbar">
         <div class="row justify-content-center">
             <div class="col-2">
                 <img src="@/assets/images/profile-placeholder.png" width="36" />
@@ -80,6 +80,8 @@ setTimeout(()=> {
             </div>
         </div>
     </div>
+
+    <br class="desktop-only"/><br/><br/>
 </template>
 
 <style scoped>
