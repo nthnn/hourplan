@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import $ from "jquery";
 import Navbar from "../components/Navbar.vue";
+import NewTaskModal from "../components/NewTaskModal.vue";
+
 import { useRouter } from "vue-router";
 import { nextTick, ref } from "vue";
 import {
@@ -52,7 +54,9 @@ setTimeout(()=> {
 
             <div class="col-6">
                 <div class="w-100" align="right">
-                    <button class="w-auto btn outlined-secondary brdr-secondary text-dark text-lato w-100 py-2">Add New Task</button>
+                    <button
+                        class="w-auto btn outlined-secondary brdr-secondary text-dark text-lato w-100 py-2"
+                        data-bs-toggle="modal" data-bs-target="#newTaskModal">Add New Task</button>
                 </div>
             </div>
         </div>
@@ -94,4 +98,5 @@ setTimeout(()=> {
     </div>
 
     <br/><br/>
+    <NewTaskModal />
 </template>
