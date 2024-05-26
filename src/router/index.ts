@@ -16,12 +16,14 @@ const router = createRouter({
         {
             path: '/login',
             name: 'login',
-            component: Login
+            component: Login,
+            meta: { overflowHidden: true }
         },
         {
             path: '/signup',
             name: 'signup',
-            component: Signup
+            component: Signup,
+            meta: { overflowHidden: true }
         },
         {
             path: '/home',
