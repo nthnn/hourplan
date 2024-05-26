@@ -32,7 +32,7 @@ setTimeout(()=> {
     <div class="main-content">
         <div class="row mt-4 px-2 px-lg-4">
             <div class="col-6">
-                <div class="d-inline-block btn w-auto px-3 px-lg-4 py-2 outlined-secondary brdr-secondary" align="center">
+                <div class="d-inline-block btn w-auto px-2 px-lg-4 py-2 outlined-secondary brdr-secondary" align="center">
                     <p id="date-elem" class="text-lato m-0"></p>
                 </div>
             </div>
