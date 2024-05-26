@@ -85,6 +85,10 @@ html.overflow-hidden, body.overflow-hidden {
     display: none;
 }
 
+.vc-time-select-hours, .vc-time-select-minutes {
+    border: none !important;
+}
+
 @media only screen and (max-width: 771px) {
     .desktop-only { display: none; }
 
