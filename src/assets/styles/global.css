@@ -10,6 +10,14 @@
     text-transform: none;
 }
 
+.overflow-hidden {
+    overflow: hidden !important;
+}
+
+html.overflow-hidden, body.overflow-hidden {
+    overflow: hidden !important;
+}
+
 .text-lato {
     font-family: "Lato", sans-serif !important;
     text-transform: none !important;
@@ -64,6 +72,19 @@
     border-width: 0px 0px 4px 0px !important;
 }
 
+.vc-title {
+    background-color: white !important;
+}
+
+#date-picker {
+    padding: 4px;
+    border-width: 2px !important;
+}
+
+.vc-week:last-child {
+    display: none;
+}
+
 @media only screen and (max-width: 771px) {
     .desktop-only { display: none; }
 
@@ -72,4 +93,17 @@
 
 @media only screen and (min-width: 770px) {
     .mobile-only { display: none; }
+
+    .main-content {
+        padding-left: 100px;
+        padding-right: 100px;
+    }
+
+    .vc-header {
+        margin-top: 16px !important;
+    }
+
+    .vc-header, .vc-day {
+        margin-bottom: 12px;
+    }
 }
