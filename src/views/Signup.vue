@@ -95,14 +95,6 @@ function signup() {
     </div>
 </template>
 
-<style>
-    html, body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden !important;
-    }
-</style>
-
 <style scoped>
     .sitting-cat {
         margin-bottom: -87px;
@@ -126,10 +118,6 @@ function signup() {
     }
 
     @media only screen and (max-width: 771px) {
-        html, body {
-            overflow: hidden;
-        }
-
         #twohands {
             left: calc(50% - 100px);
             bottom: -100px !important;
