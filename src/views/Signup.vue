@@ -75,16 +75,18 @@ function signup() {
                 <input type="password" placeholder="Password" class="form-control mt-2 text-lato" id="password" />
 
                 <p class="text-danger mt-2 d-none animate__animated text-lato" id="signup-error"></p>
-                <button
-                    class="btn btn-warning clr-secondary brdr-secondary text-dark text-lato w-100 mt-4"
-                    @click="signup">Sign-up</button>
+                <div align="center">
+                    <button
+                        class="btn btn-warning clr-secondary brdr-secondary text-dark text-lato w-75 mt-4"
+                        @click="signup">Sign-up</button>
+                </div>
             </div>
 
             <div align="center">
                 <p class="text-lato mt-3">Already have an account?</p>
 
                 <RouterLink
-                    class="btn outlined-secondary brdr-secondary text-dark text-lato w-100"
+                    class="btn outlined-secondary brdr-secondary text-dark text-lato w-50 mx-4"
                     to="/login">Login</RouterLink>
             </div>
         </div>
@@ -109,20 +111,20 @@ function signup() {
         background-position: bottom center;
         background-repeat: no-repeat;
         background-size: 100%;
-        left: calc(50% - 400px);
-        bottom: -450px;
+        left: calc(50% - 300px);
+        bottom: -350px;
         z-index: -9999;
         position: fixed;
-        height: 800px;
-        width: 800px;
+        height: 600px;
+        width: 600px;
     }
 
     @media only screen and (max-width: 771px) {
         #twohands {
-            left: calc(50% - 100px);
-            bottom: -100px !important;
-            height: 200px;
-            width: 200px;
+            left: calc(50% - 150px);
+            bottom: -150px !important;
+            height: 300px;
+            width: 300px;
             bottom: 0;
         }
     }

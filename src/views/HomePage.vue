@@ -23,7 +23,7 @@ function updateHighlightedDates() {
     }));
 }
 
-dates.value.push(new Date());
+dates.value.push(Date.now());
 updateHighlightedDates();
 
 setTimeout(()=> {
@@ -78,8 +78,6 @@ setTimeout(()=> {
                 <div id="class-sched-loading" align="center">
                     <br/>
                     <img src="@/assets/images/cat-loading.gif" width="150" />
-                    <br/>
-                    <p>Loading...</p>
                 </div>
             </div>
 
@@ -90,8 +88,6 @@ setTimeout(()=> {
                 <div id="class-sched-loading" align="center">
                     <br/>
                     <img src="@/assets/images/cat-loading.gif" width="150" />
-                    <br/>
-                    <p>Loading...</p>
                 </div>
             </div>
         </div>
