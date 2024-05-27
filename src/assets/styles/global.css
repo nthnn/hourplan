@@ -85,8 +85,17 @@ html.overflow-hidden, body.overflow-hidden {
     display: none;
 }
 
-.vc-time-select-hours, .vc-time-select-minutes {
+.vc-time-select-hours,
+.vc-time-select-minutes,
+.vc-base-select select {
     border: none !important;
+}
+
+.vc-time-day,
+.vc-time-month,
+.vc-time-year,
+.vc-time-select-group svg {
+    color: #1a172a !important;
 }
 
 @media only screen and (max-width: 771px) {
