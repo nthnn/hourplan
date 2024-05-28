@@ -6,10 +6,11 @@ import env from "../assets/scripts/config";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
+const username: string = localStorage.getItem("username") as string;
+
 setTimeout(()=> {
     $("#" + (route.name as string) + "-route").addClass("selected-menu");
     $("#mb-" + (route.name as string) + "-route").addClass("menu-selected");
-    $("#username").html(localStorage.getItem('username') as string);
 
     $("#logout-route").click(()=> {
         $.post(
@@ -27,15 +28,17 @@ setTimeout(()=> {
             }
         );
     });
-}, 300);
+}, 10);
 </script>
 
 <template>
     <div class="clr-primary hp-navbar p-3 d-fixed fixed-top desktop-only">
         <div class="row">
             <div class="col-6 mt-1">
-                <img src="@/assets/images/profile-placeholder.png" class="mx-4" width="36" />
-                <p id="username" class="text-white d-inline text-lato"></p>
+                <RouterLink to="/profile" class="text-decoration-none">
+                    <img src="@/assets/images/profile-placeholder.png" class="mx-4" width="36" />
+                    <p class="text-white d-inline text-lato">{{ username }}</p>
+                </RouterLink>
             </div>
 
             <div class="col-6" align="right">
