@@ -31,6 +31,7 @@ function createNewTask() {
         env.host + "/task.php",
         {
             action: "create",
+            session: localStorage.getItem("hash") as string,
             title: title,
             desc: desc,
             start_dt: startDt,
@@ -154,9 +155,7 @@ function createNewTask() {
                     <div align="right">
                         <button
                             class="btn clr-secondary text-lato brdr-dark"
-                            @click="createNewTask"
-                            data-bs-toggle="modal"
-                            data-bs-target="#taskCreatedModal">Submit New Task</button>
+                            @click="createNewTask">Submit New Task</button>
                     </div>
                 </div>
             </div>
