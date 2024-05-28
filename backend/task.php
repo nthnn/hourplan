@@ -4,6 +4,7 @@
     include_once("lib/db_config.php");
     include_once("lib/guidv4.php");
     include_once("lib/response.php");
+    include_once("lib/session.php");
     include_once("lib/validator.php");
 
     class Task {
@@ -11,7 +12,7 @@
             $title, $desc,
             $start_dt, $end_dt,
             $repeat, $ends,
-            $type
+            $type, $session
         ) {
             if(!validateUnixTimestamp($start_dt) ||
                 !validateUnixTimestamp($end_dt)) {
@@ -34,10 +35,18 @@
                 return;
             }
 
+            $sessionId = getSessionUserId($session);
+            if($sessionId < 0) {
+                respondError("Invalid session user ID.");
+                return;
+            }
+
             global $db_conn;
             $res = mysqli_query(
                 $db_conn,
-                "INSERT INTO task (`title`, `desc`, `start`, `end`, `repeat`, `ends`, `type`) VALUES (".
+                "INSERT INTO task ".
+                    "(`user_id`, `title`, `desc`, `start`, `end`, `repeat`, `ends`, `type`) VALUES (".
+                    $sessionId.", ".
                     "\"".$title."\", ".
                     "\"".$desc."\", ".
                     $start_dt.", ".
@@ -54,6 +63,9 @@
 
             respondOk();
         }
+
+        public static function fetchTodayTasks($session) {
+        }
     }
 
     if($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -64,6 +76,7 @@
 
         $action = $_POST["action"];
         if($action == "create" &&
+            isset($_POST["session"]) && !empty($_POST["session"]) &&
             isset($_POST["title"]) && !empty($_POST["title"]) &&
             isset($_POST["desc"]) && !empty($_POST["desc"]) &&
             isset($_POST["start_dt"]) && $_POST["start_dt"] != "" &&
@@ -71,6 +84,7 @@
             isset($_POST["repeat"]) && $_POST["repeat"] != "" &&
             isset($_POST["ends"]) && $_POST["ends"] != "" &&
             isset($_POST["type"]) && $_POST["type"] != "") {
+            $session = $_POST["session"];
             $title = $_POST["title"];
             $desc = $_POST["desc"];
             $start_dt = $_POST["start_dt"];
@@ -86,7 +100,8 @@
                 $end_dt,
                 $repeat,
                 $ends,
-                $type
+                $type,
+                $session
             );
             return;
         }
