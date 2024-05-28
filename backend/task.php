@@ -24,7 +24,7 @@
                 return;
             }
 
-            if(!validateUnixTimestamp($ends)) {
+            if($ends != 0 && !validateUnixTimestamp($ends)) {
                 respondError("Invalid UNIX date/timestamp for end range.");
                 return;
             }
@@ -37,13 +37,13 @@
             global $db_conn;
             $res = mysqli_query(
                 $db_conn,
-                "INSERT INTO task VALUES (".
+                "INSERT INTO task (`title`, `desc`, `start`, `end`, `repeat`, `ends`, `type`) VALUES (".
                     "\"".$title."\", ".
                     "\"".$desc."\", ".
                     $start_dt.", ".
                     $end_dt.", ".
                     $repeat.", ".
-                    "\"".$ends."\", ".
+                    $ends.", ".
                     $type.")"
             );
 
