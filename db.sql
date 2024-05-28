@@ -13,6 +13,7 @@ CREATE TABLE session (
 
 CREATE TABLE task (
   `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
   `desc` varchar(1024) NOT NULL,
   `start` int(10) NOT NULL,
   `end` int(10) NOT NULL,
