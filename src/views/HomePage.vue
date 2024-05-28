@@ -46,13 +46,13 @@ setTimeout(()=> {
 
     <div class="main-content">
         <div class="row mt-4 px-2 px-lg-4">
-            <div class="col-6">
-                <div class="d-inline-block btn w-auto px-2 px-lg-4 py-2 outlined-secondary brdr-secondary" align="center">
+            <div class="col-7">
+                <div class="d-inline-block w-auto px-2 px-lg-4 py-2 outlined-secondary brdr-secondary" align="center">
                     <p id="date-elem" class="text-lato m-0"></p>
                 </div>
             </div>
 
-            <div class="col-6">
+            <div class="col-5">
                 <div class="w-100" align="right">
                     <button
                         class="w-auto btn outlined-secondary brdr-secondary text-dark text-lato w-100 py-2"
