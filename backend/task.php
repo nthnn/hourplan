@@ -64,7 +64,35 @@
             respondOk();
         }
 
-        public static function fetchTodayTasks($session) {
+        public static function fetchTodaysTasks($session) {
+            global $db_conn;
+
+            $sessionId = getSessionUserId($session);
+            if($sessionId < 0) {
+                respondError("Invalid session user ID.");
+                return;
+            }
+
+            $startOfDay = strtotime('today midnight');
+            $endOfDay = strtotime('tomorrow midnight') - 1;
+
+            $result = mysqli_query(
+                $db_conn,
+                "SELECT * FROM task ".
+                    "WHERE ((start <= ".$endOfDay." AND end >= ".$startOfDay.") ".
+                    "OR (start >= ".$startOfDay." AND `start` <= ".$endOfDay.") ".
+                    "OR (end >= ".$startOfDay." AND end <= ".$endOfDay."))".
+                    "AND type=0 AND user_id=".$sessionId
+            );
+
+            if(!$result) {
+                respondFailed();
+                return;
+            }
+
+            $res = array("status"=> 1, "tasks"=> mysqli_fetch_all($result));
+            echo json_encode($res);
+            return;
         }
     }
 
@@ -103,6 +131,13 @@
                 $type,
                 $session
             );
+            return;
+        }
+        else if($action == "todays_unfinished_tasks" &&
+            isset($_POST["session"]) && !empty($_POST["session"])) {
+            $session = $_POST["session"];
+
+            Task::fetchTodaysTasks($session);
             return;
         }
     }
