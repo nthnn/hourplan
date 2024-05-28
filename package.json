@@ -27,6 +27,7 @@
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.8.0",
     "@tsconfig/node20": "^20.1.4",
+    "@types/bootstrap": "^5.2.10",
     "@types/jquery": "^3.5.30",
     "@types/md5": "^2.3.5",
     "@types/node": "^20.12.5",
