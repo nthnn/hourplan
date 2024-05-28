@@ -17,7 +17,9 @@
             $result = mysqli_query(
                 $db_conn,
                 "SELECT user_id FROM session WHERE ".
-                    "hash=\"".$hash."\""
+                    "hash=\"".$hash."\" AND ".
+                    "addr=\"".$_SERVER["REMOTE_ADDR"]."\" AND ".
+                    "user_agent=\"".$_SERVER["HTTP_USER_AGENT"]."\""
             );
 
             if(mysqli_num_rows($result) == 1) {
@@ -78,8 +80,10 @@
             $uuid = guidv4();
             $logRes = mysqli_query(
                 $db_conn,
-                "INSERT INTO session (user_id, hash) VALUES".
-                    "(".$id.", \"".$uuid."\")"
+                "INSERT INTO session (user_id, hash, addr, user_agent) VALUES".
+                    "(".$id.", \"".$uuid."\", \"".
+                    $_SERVER["REMOTE_ADDR"]."\", \"".
+                    $_SERVER["HTTP_USER_AGENT"]."\")"
             );
 
             if(!$logRes) {
