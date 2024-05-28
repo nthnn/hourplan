@@ -102,6 +102,10 @@ function signup() {
         margin-bottom: -87px;
     }
 
+    div:has(> .sitting-cat) {
+        overflow: hidden !important;
+    }
+
     .signup-form {
         margin-top: -140px !important;
     }

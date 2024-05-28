@@ -99,6 +99,10 @@ function login() {
         margin-bottom: -87px;
     }
 
+    div:has(> .sitting-cat) {
+        overflow: hidden !important;
+    }
+
     .login-form {
         margin-top: -125px;
     }
