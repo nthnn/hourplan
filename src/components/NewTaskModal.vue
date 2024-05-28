@@ -71,6 +71,23 @@ endRepeatDate.value.setDate(endRepeatDate.value.getDate() + 1);
                             </VDatePicker>
                         </div>
                     </div>
+
+                    <label for="task-type" class="form-label text-lato">Type</label>
+                    <div class="d-block">
+                        <div class="form-check d-inline-block">
+                            <input type="radio" name="task-type" id="task-type" class="form-check-input" value="task" />
+                            <label for="task-type" class="form-label text-lato">Task</label>
+                        </div>
+
+                        <div class="form-check d-inline-block ms-4">
+                            <input type="radio" name="task-type" id="task-type" class="form-check-input" value="schedule" />
+                            <label for="task-type" class="form-label text-lato">Schedule</label>
+                        </div>
+                    </div>
+
+                    <div align="right">
+                        <button class="btn clr-secondary text-lato brdr-dark">Submit New Task</button>
+                    </div>
                 </div>
             </div>
         </div>
