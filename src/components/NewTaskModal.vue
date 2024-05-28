@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import "../../node_modules/animate.css/animate.min.css";
+
 import $ from "jquery";
+import env from "@/assets/scripts/config";
+
 import { ref } from "vue";
 import { toUNIX } from "@/assets/scripts/time";
 
@@ -22,6 +26,43 @@ function createNewTask() {
     if(ends == "never")
         ends = 0;
     else ends = toUNIX(endRepeatDate.value);
+
+    $.post(
+        env.host + "/task.php",
+        {
+            action: "create",
+            title: title,
+            desc: desc,
+            start_dt: startDt,
+            end_dt: endDt,
+            repeat: repeat,
+            ends: ends,
+            type: type
+        },
+        (data: any)=> {
+            $("#create-error").removeClass("d-block");
+            $("#create-error").addClass("d-none");
+
+            console.log(data);
+            if(data.status == 1) {
+                $("#create-error").removeClass("d-block");
+                $("#create-error").addClass("d-none");
+
+                return;
+            }
+
+            $("#create-error").html(data.error);
+            $("#create-error").removeClass("d-none");
+
+            $("#create-error").addClass("animate__shakeX");
+            $("#create-error").addClass("d-block");
+
+            setTimeout(
+                ()=> $("#create-error").removeClass("animate__shakeX"),
+                1500
+            );
+        }
+    );
 }
 </script>
 
@@ -108,10 +149,27 @@ function createNewTask() {
                             <label for="task-type" class="form-label text-lato">Schedule</label>
                         </div>
                     </div>
+                    <p class="text-lato text-danger" id="create-error"></p>
 
                     <div align="right">
-                        <button class="btn clr-secondary text-lato brdr-dark" @click="createNewTask">Submit New Task</button>
+                        <button
+                            class="btn clr-secondary text-lato brdr-dark"
+                            @click="createNewTask"
+                            data-bs-toggle="modal"
+                            data-bs-target="#taskCreatedModal">Submit New Task</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="taskCreatedModal" tabindex="-1" aria-labelledby="taskCreatedModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow">
+                <div class="modal-body" align="center">
+                    <img src="@/assets/images/cat-happy.png" width="120" />
+                    <br/>
+                    <h3>Task was successfully created!</h3>
                 </div>
             </div>
         </div>
