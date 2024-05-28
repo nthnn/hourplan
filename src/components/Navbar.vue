@@ -57,7 +57,9 @@ setTimeout(()=> {
     <div class="clr-primary hp-navbar pt-3 pl-3 pr-3 d-fixed fixed-top mobile-only" id="mb-navbar">
         <div class="row justify-content-center">
             <div class="col-2">
-                <img src="@/assets/images/profile-placeholder.png" width="36" />
+                <RouterLink to="/profile" class="text-decoration-none">
+                    <img src="@/assets/images/profile-placeholder.png" width="36" />
+                </RouterLink>
             </div>
 
             <div class="col-2">
