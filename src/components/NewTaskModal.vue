@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import $ from "jquery";
 import { ref } from "vue";
+import { toUNIX } from "@/assets/scripts/time";
 
 const startDate = ref(new Date()),
     endDate = ref(new Date()),
@@ -7,6 +9,20 @@ const startDate = ref(new Date()),
 
 endDate.value.setDate(endDate.value.getDate() + 1);
 endRepeatDate.value.setDate(endRepeatDate.value.getDate() + 1);
+
+function createNewTask() {
+    const title = $("#task-title").val();
+    const desc = $("#task-desc").val();
+    const startDt = toUNIX(startDate.value);
+    const endDt = toUNIX(endDate.value);
+    const repeat = $("#task-repeat option:selected").val();
+    const type = $("input[name=task-type]:checked").val();
+
+    let ends: any = $("input[name=task-end]:checked").val();
+    if(ends == "never")
+        ends = 0;
+    else ends = toUNIX(endRepeatDate.value);
+}
 </script>
 
 <template>
@@ -14,7 +30,15 @@ endRepeatDate.value.setDate(endRepeatDate.value.getDate() + 1);
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content shadow">
                 <div class="modal-body">
-                    <h3 class="mb-4">Add New Task</h3>
+                    <div class="row">
+                        <div class="col-9">
+                            <h3 class="mb-4">Add New Task</h3>
+                        </div>
+
+                        <div class="col-3" align="right">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
 
                     <label for="task-title" class="form-label text-lato">Title</label>
                     <input type="text" class="form-control text-lato" id="task-title" placeholder="Add Title" />
@@ -43,12 +67,12 @@ endRepeatDate.value.setDate(endRepeatDate.value.getDate() + 1);
                     </div>
 
                     <label for="task-repeat" class="form-label text-lato mt-2">Repeat</label>
-                    <select id="task-repeat" class="form-control text-lato">
-                        <option class="text-lato" value="no-repeat">Does not repeat</option>
-                        <option class="text-lato" value="everyday">Every Day</option>
-                        <option class="text-lato" value="everyweek">Every Week</option>
-                        <option class="text-lato" value="everymonth">Every Month</option>
-                        <option class="text-lato" value="everyyear">Every Year</option>
+                    <select id="task-repeat" name="task-repeat" class="form-control text-lato">
+                        <option class="text-lato" value="0">Does not repeat</option>
+                        <option class="text-lato" value="1">Every Day</option>
+                        <option class="text-lato" value="2">Every Week</option>
+                        <option class="text-lato" value="3">Every Month</option>
+                        <option class="text-lato" value="4">Every Year</option>
                     </select>
 
                     <label for="task-end" class="form-label text-lato mt-2">Ends</label>
@@ -66,7 +90,7 @@ endRepeatDate.value.setDate(endRepeatDate.value.getDate() + 1);
                         <div class="form-check d-inline-block">
                             <VDatePicker v-model="endRepeatDate" mode="dateTime" :input-debounce="500">
                                 <template #default="{ inputValue, inputEvents }">
-                                    <input class="form-control text-lato d-inline-block" id="task-end-repeat-date" :value="inputValue" v-on="inputEvents" />
+                                    <input class="form-control text-lato d-inline-block mb-2" id="task-end-repeat-date" :value="inputValue" v-on="inputEvents" />
                                 </template>
                             </VDatePicker>
                         </div>
@@ -75,18 +99,18 @@ endRepeatDate.value.setDate(endRepeatDate.value.getDate() + 1);
                     <label for="task-type" class="form-label text-lato">Type</label>
                     <div class="d-block">
                         <div class="form-check d-inline-block">
-                            <input type="radio" name="task-type" id="task-type" class="form-check-input" value="task" />
+                            <input type="radio" name="task-type" id="task-type" class="form-check-input" value="0" />
                             <label for="task-type" class="form-label text-lato">Task</label>
                         </div>
 
                         <div class="form-check d-inline-block ms-4">
-                            <input type="radio" name="task-type" id="task-type" class="form-check-input" value="schedule" />
+                            <input type="radio" name="task-type" id="task-type" class="form-check-input" value="1" />
                             <label for="task-type" class="form-label text-lato">Schedule</label>
                         </div>
                     </div>
 
                     <div align="right">
-                        <button class="btn clr-secondary text-lato brdr-dark">Submit New Task</button>
+                        <button class="btn clr-secondary text-lato brdr-dark" @click="createNewTask">Submit New Task</button>
                     </div>
                 </div>
             </div>
