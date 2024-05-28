@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar.vue";
 import NewTaskModal from "../components/NewTaskModal.vue";
 
 import { useRouter } from "vue-router";
-import { nextTick, ref } from "vue";
+import { nextTick, ref, type Ref } from "vue";
 import {
     validateCurrentSession
 } from "@/assets/scripts/session";
@@ -13,7 +13,7 @@ const router = useRouter();
 validateCurrentSession(router);
 setInterval(()=> validateCurrentSession(router), 1000);
 
-const dates = ref([]);
+const dates: Ref<Date[]> = ref([]);
 const calendarAttr = ref({});
 
 function updateHighlightedDates() {
@@ -23,7 +23,7 @@ function updateHighlightedDates() {
     }));
 }
 
-dates.value.push(Date.now());
+dates.value.push(new Date());
 updateHighlightedDates();
 
 setTimeout(()=> {
