@@ -28,6 +28,20 @@ function createNewTask() {
         ends = 0;
     else ends = toUNIX(endRepeatDate.value);
 
+    if(type == undefined || repeat == undefined) {
+        $("#create-error").html("Repeat and type must have a selected value.");
+        $("#create-error").removeClass("d-none");
+
+        $("#create-error").addClass("animate__shakeX");
+        $("#create-error").addClass("d-block");
+
+        setTimeout(
+            ()=> $("#create-error").removeClass("animate__shakeX"),
+            1500
+        );
+        return;
+    }
+
     $.post(
         env.host + "/task.php",
         {
@@ -53,7 +67,7 @@ function createNewTask() {
                 $("#closeCreateTaskModal").trigger("click");
                 setTimeout(
                     ()=> $("#openTaskCreatedModal").trigger("click"),
-                    500
+                    200
                 );
 
                 return;
@@ -124,7 +138,7 @@ function createNewTask() {
                     </div>
 
                     <label for="task-repeat" class="form-label text-lato mt-2">Repeat</label>
-                    <select id="task-repeat" name="task-repeat" class="form-control text-lato">
+                    <select id="task-repeat" name="task-repeat" class="form-control text-lato" required>
                         <option class="text-lato" value="0">Does not repeat</option>
                         <option class="text-lato" value="1">Every Day</option>
                         <option class="text-lato" value="2">Every Week</option>
@@ -135,12 +149,12 @@ function createNewTask() {
                     <label for="task-end" class="form-label text-lato mt-2">Ends</label>
                     <div class="d-block">
                         <div class="form-check d-inline-block">
-                            <input class="form-check-input" type="radio" id="task-end-never" value="never" name="task-end" />
+                            <input class="form-check-input" type="radio" id="task-end-never" value="never" name="task-end" required />
                             <label for="task-end-never" class="form-label text-lato">Never</label>
                         </div>
 
                         <div class="form-check d-inline-block ms-4">
-                            <input class="form-check-input" type="radio" id="task-end-on" value="on" name="task-end" />
+                            <input class="form-check-input" type="radio" id="task-end-on" value="on" name="task-end" required />
                             <label for="task-end-on" class="form-label text-lato">On</label>
                         </div>
 
@@ -156,12 +170,12 @@ function createNewTask() {
                     <label for="task-type" class="form-label text-lato">Type</label>
                     <div class="d-block">
                         <div class="form-check d-inline-block">
-                            <input type="radio" name="task-type" id="task-type" class="form-check-input" value="0" />
+                            <input type="radio" name="task-type" id="task-type" class="form-check-input" value="0" required />
                             <label for="task-type" class="form-label text-lato">Task</label>
                         </div>
 
                         <div class="form-check d-inline-block ms-4">
-                            <input type="radio" name="task-type" id="task-type" class="form-check-input" value="1" />
+                            <input type="radio" name="task-type" id="task-type" class="form-check-input" value="1" required />
                             <label for="task-type" class="form-label text-lato">Schedule</label>
                         </div>
                     </div>
