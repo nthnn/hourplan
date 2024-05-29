@@ -14,29 +14,33 @@ import { toJSDate } from "@/assets/scripts/time";
 validateCurrentSession();
 setInterval(()=> validateCurrentSession(), 1000);
 
-const dates: Ref<Date[]> = ref([]);
-const calendarAttr: Ref<{}> = ref({});
+const dates: Ref<Array<Date[]>> = ref([]);
+const calendarAttr: Ref<Array<any>> = ref([]);
 
 function updateHighlightedDates(): void {
-    calendarAttr.value = dates.value.map(date=> ({
-        highlight: true,
-        dates: date
-    }));
+    calendarAttr.value = [];
+    dates.value.forEach(date=> {
+        calendarAttr.value.push({
+            highlight: true,
+            dates: [[date[0], date[1]]]
+        });
+    });
 }
-
-dates.value.push(new Date());
 
 setInterval(()=> {
     $.post(
         env.host + "/task.php",
         {
-            action: "marked_dates_current_month",
+            action: "highlightable_dates",
             session: localStorage.getItem("hash") as string
         },
         (data: any)=> {
             if(data.status == 1) {
-                data.dates.forEach((date: string)=>
-                    dates.value.push(toJSDate(parseInt(date))));
+                dates.value = [];
+                data.dates.forEach((date: any)=> {
+                    dates.value.push([toJSDate(parseInt(date[0])), toJSDate(parseInt(date[1]))]);
+                    console.log([toJSDate(parseInt(date[0])), toJSDate(parseInt(date[1]))]);
+                });
                 updateHighlightedDates();
             }
         }
@@ -94,8 +98,6 @@ setTimeout(()=> {
 
         <div class="px-2 px-lg-4">
             <VDatePicker
-                id="date-picker"
-                mode="multiple"
                 class="w-100 border-dark date-picker"
                 :attributes="calendarAttr" />
         </div>
