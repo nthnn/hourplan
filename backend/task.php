@@ -105,7 +105,41 @@
                     "tasks"=> mysqli_fetch_all($result)
                 ))
             );
-            return;
+        }
+
+        public static function markedDatesCurrentMonth($session) {
+            global $db_conn;
+
+            $sessionId = getSessionUserId($session);
+            if($sessionId < 0) {
+                respondError("Invalid session user ID.");
+                return;
+            }
+
+            $startOfMonth = strtotime(date('Y-m-01 00:00:00'));
+            $endOfMonth = strtotime(date('Y-m-t 23:59:59'));
+
+            $result = mysqli_query(
+                $db_conn,
+                "SELECT start FROM task WHERE is_finished=0 AND user_id=".$sessionId." ".
+                    "AND (start >= ".$startOfMonth." AND end <= ".$endOfMonth.")"
+            );
+
+            if(!$result) {
+                respondFailed();
+                return;
+            }
+
+            $dates = array();
+            while($row = mysqli_fetch_row($result))
+                array_push($dates, $row[0]);
+
+            jsonResponse(
+                json_encode(array(
+                    "status"=> 1,
+                    "dates"=> $dates
+                ))
+            );
         }
     }
 
@@ -161,6 +195,13 @@
             $session = $_POST["session"];
 
             Task::fetchTodaysTasks($session, 1, 0);
+            return;
+        }
+        else if($action == "marked_dates_current_month" &&
+            isset($_POST["session"]) && !empty($_POST["session"])) {
+            $session = $_POST["session"];
+
+            Task::markedDatesCurrentMonth($session);
             return;
         }
     }
