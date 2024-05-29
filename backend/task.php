@@ -107,7 +107,7 @@
             );
         }
 
-        public static function markedDatesCurrentMonth($session) {
+        public static function highlightableDates($session) {
             global $db_conn;
 
             $sessionId = getSessionUserId($session);
@@ -116,13 +116,9 @@
                 return;
             }
 
-            $startOfMonth = strtotime(date('Y-m-01 00:00:00'));
-            $endOfMonth = strtotime(date('Y-m-t 23:59:59'));
-
             $result = mysqli_query(
                 $db_conn,
-                "SELECT start FROM task WHERE is_finished=0 AND user_id=".$sessionId." ".
-                    "AND (start >= ".$startOfMonth." AND end <= ".$endOfMonth.")"
+                "SELECT start, end FROM task WHERE is_finished=0 AND user_id=".$sessionId
             );
 
             if(!$result) {
@@ -130,14 +126,10 @@
                 return;
             }
 
-            $dates = array();
-            while($row = mysqli_fetch_row($result))
-                array_push($dates, $row[0]);
-
             jsonResponse(
                 json_encode(array(
                     "status"=> 1,
-                    "dates"=> $dates
+                    "dates"=> mysqli_fetch_all($result)
                 ))
             );
         }
@@ -197,11 +189,11 @@
             Task::fetchTodaysTasks($session, 1, 0);
             return;
         }
-        else if($action == "marked_dates_current_month" &&
+        else if($action == "highlightable_dates" &&
             isset($_POST["session"]) && !empty($_POST["session"])) {
             $session = $_POST["session"];
 
-            Task::markedDatesCurrentMonth($session);
+            Task::highlightableDates($session);
             return;
         }
     }
