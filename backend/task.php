@@ -99,8 +99,12 @@
                 return;
             }
 
-            $res = array("status"=> 1, "tasks"=> mysqli_fetch_all($result));
-            echo json_encode($res);
+            jsonResponse(
+                json_encode(array(
+                    "status"=> 1,
+                    "tasks"=> mysqli_fetch_all($result)
+                ))
+            );
             return;
         }
     }
