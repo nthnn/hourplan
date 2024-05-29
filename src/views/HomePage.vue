@@ -37,10 +37,8 @@ setInterval(()=> {
         (data: any)=> {
             if(data.status == 1) {
                 dates.value = [];
-                data.dates.forEach((date: any)=> {
-                    dates.value.push([toJSDate(parseInt(date[0])), toJSDate(parseInt(date[1]))]);
-                    console.log([toJSDate(parseInt(date[0])), toJSDate(parseInt(date[1]))]);
-                });
+                data.dates.forEach((date: any)=>
+                    dates.value.push([toJSDate(parseInt(date[0])), toJSDate(parseInt(date[1]))]));
                 updateHighlightedDates();
             }
         }
