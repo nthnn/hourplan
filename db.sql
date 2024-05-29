@@ -22,6 +22,8 @@ CREATE TABLE task (
     `start` int(10) NOT NULL,
     `end` int(10) NOT NULL,
     `repeat` int(1) NOT NULL,
+    `color` varchar(7) NOT NULL,
     `ends` int(10) NOT NULL,
-    `type` int(1) NOT NULL
+    `type` int(1) NOT NULL,
+    `is_finished` int(1) NOT NULL
 );
