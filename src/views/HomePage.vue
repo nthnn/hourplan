@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import $ from "jquery";
+import env from "@/assets/scripts/config";
 import Navbar from "../components/Navbar.vue";
 import NewTaskModal from "../components/NewTaskModal.vue";
 import TaskList from "../components/TaskList.vue";
@@ -8,6 +9,7 @@ import { ref, type Ref } from "vue";
 import {
     validateCurrentSession
 } from "@/assets/scripts/session";
+import { toJSDate } from "@/assets/scripts/time";
 
 validateCurrentSession();
 setInterval(()=> validateCurrentSession(), 1000);
@@ -23,7 +25,23 @@ function updateHighlightedDates(): void {
 }
 
 dates.value.push(new Date());
-updateHighlightedDates();
+
+setInterval(()=> {
+    $.post(
+        env.host + "/task.php",
+        {
+            action: "marked_dates_current_month",
+            session: localStorage.getItem("hash") as string
+        },
+        (data: any)=> {
+            if(data.status == 1) {
+                data.dates.forEach((date: string)=>
+                    dates.value.push(toJSDate(parseInt(date))));
+                updateHighlightedDates();
+            }
+        }
+    );
+}, 300);
 
 setTimeout(()=> {
     $("#date-elem").html(
@@ -37,6 +55,19 @@ setTimeout(()=> {
             } as any
         )
     );
+
+    const currentDate: Date = new Date();
+    const currentDayMarker: JQuery<HTMLElement> = $(".id-" + currentDate.getFullYear() +
+        "-" + (currentDate.getMonth() + 1 <= 9 ? "0" : "") + (currentDate.getMonth() + 1) +
+        "-" + (currentDate.getDate() <= 9 ? "0" : "") + currentDate.getDate() +
+        " .vc-day-content");
+
+    currentDayMarker.css({
+        "outline-color": "#ebb797",
+        "border-color": "#ebb797",
+        "background-color": "#ebb797",
+        "color": "#1a172a"
+    });
 }, 200);
 </script>
 
