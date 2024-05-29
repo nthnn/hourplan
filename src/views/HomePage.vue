@@ -2,9 +2,10 @@
 import $ from "jquery";
 import Navbar from "../components/Navbar.vue";
 import NewTaskModal from "../components/NewTaskModal.vue";
+import TaskList from "../components/TaskList.vue";
 
 import { useRouter } from "vue-router";
-import { nextTick, ref, type Ref } from "vue";
+import { ref, type Ref } from "vue";
 import {
     validateCurrentSession
 } from "@/assets/scripts/session";
@@ -73,22 +74,26 @@ setTimeout(()=> {
 
         <div class="row px-2 px-lg-4">
             <div class="col-lg-6">
-                <h4>Class Schedule</h4>
+                <h4 class="pb-2">Class Schedule</h4>
 
                 <div id="class-sched-loading" align="center">
                     <br/>
                     <img src="@/assets/images/cat-loading.gif" width="150" />
                 </div>
+
+                <TaskList apiAction="todays_unfinished_schedules" />
             </div>
 
             <div class="col-lg-6">
                 <br class="mobile-only" />
-                <h4>Due Soon</h4>
+                <h4 class="pb-2">Due Soon</h4>
 
-                <div id="class-sched-loading" align="center">
+                <div id="class-task-loading" align="center">
                     <br/>
                     <img src="@/assets/images/cat-loading.gif" width="150" />
                 </div>
+
+                <TaskList apiAction="todays_unfinished_tasks" />
             </div>
         </div>
     </div>
