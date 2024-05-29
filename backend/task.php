@@ -11,7 +11,7 @@
         public static function create(
             $title, $desc,
             $start_dt, $end_dt,
-            $repeat, $ends,
+            $repeat, $color, $ends,
             $type, $session
         ) {
             if(!validateUnixTimestamp($start_dt) ||
@@ -35,6 +35,11 @@
                 return;
             }
 
+            if(!validateHexColor($color)) {
+                respondError("Invalid color hexadecimal string value.");
+                return;
+            }
+
             $sessionId = getSessionUserId($session);
             if($sessionId < 0) {
                 respondError("Invalid session user ID.");
@@ -45,7 +50,7 @@
             $res = mysqli_query(
                 $db_conn,
                 "INSERT INTO task ".
-                    "(`user_id`, `title`, `desc`, `start`, `end`, `repeat`, `ends`, `type`) VALUES (".
+                    "(`user_id`, `title`, `desc`, `start`, `end`, `repeat`, `ends`, `type`, `color`, `is_finished`) VALUES (".
                     $sessionId.", ".
                     "\"".$title."\", ".
                     "\"".$desc."\", ".
@@ -53,7 +58,8 @@
                     $end_dt.", ".
                     $repeat.", ".
                     $ends.", ".
-                    $type.")"
+                    $type.", ".
+                    "\"".$color."\", 0)"
             );
 
             if(!$res) {
@@ -64,7 +70,7 @@
             respondOk();
         }
 
-        public static function fetchTodaysTasks($session) {
+        public static function fetchTodaysTasks($session, $type, $isFinished) {
             global $db_conn;
 
             $sessionId = getSessionUserId($session);
@@ -79,10 +85,13 @@
             $result = mysqli_query(
                 $db_conn,
                 "SELECT * FROM task ".
-                    "WHERE ((start <= ".$endOfDay." AND end >= ".$startOfDay.") ".
-                    "OR (start >= ".$startOfDay." AND `start` <= ".$endOfDay.") ".
-                    "OR (end >= ".$startOfDay." AND end <= ".$endOfDay."))".
-                    "AND type=0 AND user_id=".$sessionId
+                    "WHERE ((".$startOfDay." BETWEEN start AND end) OR".
+                    "   (".$endOfDay." BETWEEN start AND end) OR".
+                    "   (start BETWEEN ".$startOfDay." AND ".$endOfDay.") OR".
+                    "   (end BETWEEN ".$startOfDay." AND ".$endOfDay."))".
+                    "AND type=".$type." ".
+                    "AND user_id=".$sessionId." ".
+                    "AND is_finished=".$isFinished
             );
 
             if(!$result) {
@@ -110,6 +119,7 @@
             isset($_POST["start_dt"]) && $_POST["start_dt"] != "" &&
             isset($_POST["end_dt"]) && $_POST["end_dt"] != "" &&
             isset($_POST["repeat"]) && $_POST["repeat"] != "" &&
+            isset($_POST["color"]) && $_POST["color"] != "" &&
             isset($_POST["ends"]) && $_POST["ends"] != "" &&
             isset($_POST["type"]) && $_POST["type"] != "") {
             $session = $_POST["session"];
@@ -118,6 +128,7 @@
             $start_dt = $_POST["start_dt"];
             $end_dt = $_POST["end_dt"];
             $repeat = $_POST["repeat"];
+            $color = $_POST["color"];
             $ends = $_POST["ends"];
             $type = $_POST["type"];
     
@@ -127,6 +138,7 @@
                 $start_dt,
                 $end_dt,
                 $repeat,
+                $color,
                 $ends,
                 $type,
                 $session
@@ -137,7 +149,14 @@
             isset($_POST["session"]) && !empty($_POST["session"])) {
             $session = $_POST["session"];
 
-            Task::fetchTodaysTasks($session);
+            Task::fetchTodaysTasks($session, 0, 0);
+            return;
+        }
+        else if($action == "todays_unfinished_schedules" &&
+            isset($_POST["session"]) && !empty($_POST["session"])) {
+            $session = $_POST["session"];
+
+            Task::fetchTodaysTasks($session, 1, 0);
             return;
         }
     }
