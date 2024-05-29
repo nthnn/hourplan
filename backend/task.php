@@ -79,8 +79,9 @@
                 return;
             }
 
-            $startOfDay = strtotime('today midnight');
-            $endOfDay = strtotime('tomorrow midnight') - 1;
+            $currentDate = date('Y-m-d');
+            $startOfDay = strtotime($currentDate.' - 3 days');
+            $endOfDay = strtotime($currentDate.' + 3 days');
 
             $result = mysqli_query(
                 $db_conn,
