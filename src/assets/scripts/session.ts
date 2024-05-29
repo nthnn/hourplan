@@ -1,6 +1,6 @@
 import $ from "jquery";
 import env from "@/assets/scripts/config";
-import { type Router, type RouteLocationNormalizedLoaded } from "vue-router";
+import { type RouteLocationNormalizedLoaded } from "vue-router";
 import {
     validateUuid
 } from "@/assets/scripts/validator";
@@ -9,9 +9,9 @@ function checkSession(): boolean {
     return localStorage.getItem("hash") != "null";
 }
 
-function validateCurrentSession(router: Router): void {
+function validateCurrentSession(): void {
     if(!checkSession()) {
-        router.push("/login");
+        window.location.href = "/login";
         return;
     }
 
@@ -27,7 +27,7 @@ function validateCurrentSession(router: Router): void {
                 localStorage.setItem("theme", "null");
                 localStorage.setItem("hash", "null");
 
-                router.push("/login");
+                window.location.href = "/login";
                 return;
             }
         }
@@ -35,7 +35,6 @@ function validateCurrentSession(router: Router): void {
 }
 
 function validateSession(
-    router: Router,
     routeLoc: RouteLocationNormalizedLoaded
 ): void {
     const hash: string = localStorage.getItem("hash") as string;
@@ -53,12 +52,12 @@ function validateSession(
                 localStorage.setItem("username", data.username);
                 localStorage.setItem("theme", data.theme);
 
-                router.push("/home");
+                window.location.href = "/home";
                 return;
             }
 
             if(routeLoc.name != "login")
-                router.push("/login");
+                window.location.href = "/login";
         }
     );
 }
