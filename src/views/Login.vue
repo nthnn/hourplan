@@ -5,16 +5,18 @@ import $ from "jquery";
 import env from "@/assets/scripts/config";
 import md5 from "md5";
 
-import { useRouter, RouterLink, useRoute, type Router, type RouteLocationNormalizedLoaded } from "vue-router";
+import {
+    RouterLink,
+    useRoute,
+    type RouteLocationNormalizedLoaded
+} from "vue-router";
 import {
     validateSession
 } from "@/assets/scripts/session";
 
-const router: Router = useRouter();
 const route: RouteLocationNormalizedLoaded = useRoute();
-
-validateSession(router, route);
-setInterval(()=> validateSession(router, route), 1000);
+validateSession(route);
+setInterval(()=> validateSession(route), 1000);
 
 function login() {
     const username: string = $("#username").val() as string;
@@ -39,7 +41,7 @@ function login() {
                 $("#login-error").removeClass("d-block");
                 $("#login-error").addClass("d-none");
 
-                router.push("/home");
+                window.location.href = "/home";
                 return;
             }
 

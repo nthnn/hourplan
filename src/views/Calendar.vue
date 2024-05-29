@@ -2,14 +2,12 @@
 import Navbar from "../components/Navbar.vue";
 import NewTaskModal from "../components/NewTaskModal.vue";
 
-import { useRouter, type Router } from "vue-router";
 import {
     validateCurrentSession
 } from "@/assets/scripts/session";
 
-const router: Router = useRouter();
-validateCurrentSession(router);
-setInterval(()=> validateCurrentSession(router), 1000);
+validateCurrentSession();
+setInterval(()=> validateCurrentSession(), 1000);
 
 const currentDate: string = new Date().toLocaleDateString(
     'en-US',
