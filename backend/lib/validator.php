@@ -1,5 +1,12 @@
 <?php
 
+function validateHexColor($color) {
+    return preg_match(
+        "/^#?([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$/",
+        $color
+    );
+}
+
 function validateUsername($username) {
     return strlen($username) > 6 &&
         preg_match("/^[a-zA-Z0-9_]+$/", $username);
