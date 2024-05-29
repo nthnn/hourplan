@@ -5,12 +5,11 @@ import {
     validateUuid
 } from "@/assets/scripts/validator";
 
-function checkSession() {
-    const hash = localStorage.getItem("hash");
-    return hash != "null";
+function checkSession(): boolean {
+    return localStorage.getItem("hash") != "null";
 }
 
-function validateCurrentSession(router: Router) {
+function validateCurrentSession(router: Router): void {
     if(!checkSession()) {
         router.push("/login");
         return;
@@ -20,7 +19,7 @@ function validateCurrentSession(router: Router) {
         env.host + "/account.php",
         {
             action: "validate",
-            hash: localStorage.getItem("hash")
+            hash: localStorage.getItem("hash") as string
         },
         (data)=> {
             if(data.status == 0) {
@@ -35,7 +34,10 @@ function validateCurrentSession(router: Router) {
     );
 }
 
-function validateSession(router: Router, routeLoc: RouteLocationNormalizedLoaded) {
+function validateSession(
+    router: Router,
+    routeLoc: RouteLocationNormalizedLoaded
+): void {
     const hash: string = localStorage.getItem("hash") as string;
     if(hash == "null" || !validateUuid(hash))
         return;

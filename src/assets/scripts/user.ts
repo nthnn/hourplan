@@ -1,4 +1,4 @@
-const Session: {
+export const Session: {
     username: string | null;
     password: string | null;
     email: string | null;
@@ -7,5 +7,3 @@ const Session: {
     password: null,
     email: null
 };
-
-export default Session;

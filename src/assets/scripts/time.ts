@@ -7,17 +7,18 @@ export function toJSDate(unixDate: number): Date {
 }
 
 export function toShortDate(date: Date): string {
-    const monthNames = [
+    const monthNames: Array<string> = [
         "January", "February", "March",
         "April", "May", "June",
         "July", "August", "September",
         "October", "November", "December"
     ];
 
-    let hours = date.getHours(),
-        minutes = date.getMinutes();
-    const period = hours >= 12 ? 'PM' : 'AM';
-    const paddedMinutes = minutes < 10 ? '0' + minutes : minutes;
+    let hours: number = date.getHours(),
+        minutes: number = date.getMinutes();
+    const period: string = hours >= 12 ? "PM" : "AM";
+    const paddedMinutes: string = minutes < 10 ?
+        "0" + minutes : minutes.toString();
 
     if(hours > 12)
         hours -= 12;
