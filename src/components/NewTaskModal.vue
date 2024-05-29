@@ -10,6 +10,7 @@ import { toUNIX } from "@/assets/scripts/time";
 const startDate = ref(new Date()),
     endDate = ref(new Date()),
     endRepeatDate = ref(new Date());
+const taskColor = ref("#a9b7fa");
 
 endDate.value.setDate(endDate.value.getDate() + 1);
 endRepeatDate.value.setDate(endRepeatDate.value.getDate() + 1);
@@ -37,6 +38,7 @@ function createNewTask() {
             start_dt: startDt,
             end_dt: endDt,
             repeat: repeat,
+            color: taskColor.value,
             ends: ends,
             type: type
         },
@@ -44,10 +46,15 @@ function createNewTask() {
             $("#create-error").removeClass("d-block");
             $("#create-error").addClass("d-none");
 
-            console.log(data);
             if(data.status == 1) {
                 $("#create-error").removeClass("d-block");
                 $("#create-error").addClass("d-none");
+
+                $("#closeCreateTaskModal").trigger("click");
+                setTimeout(
+                    ()=> $("#openTaskCreatedModal").trigger("click"),
+                    500
+                );
 
                 return;
             }
@@ -78,12 +85,20 @@ function createNewTask() {
                         </div>
 
                         <div class="col-3" align="right">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeCreateTaskModal"></button>
                         </div>
                     </div>
 
                     <label for="task-title" class="form-label text-lato">Title</label>
-                    <input type="text" class="form-control text-lato" id="task-title" placeholder="Add Title" />
+                    <div class="row">
+                        <div class="col-10 col-lg-10">
+                            <input type="text" class="form-control text-lato" id="task-title" placeholder="Add Title" />
+                        </div>
+
+                        <div class="col-2 col-lg-2 pe-lg-4">
+                            <input type="color" class="form-control outline-none border-none p-0 m-0 me-lg-4 h-100" v-bind:value="taskColor" />
+                        </div>
+                    </div>
 
                     <label for="task-desc" class="form-label text-lato mt-2">Description</label>
                     <input type="text" class="form-control text-lato" id="task-desc" placeholder="What your task is about?" />
@@ -173,4 +188,6 @@ function createNewTask() {
             </div>
         </div>
     </div>
+
+    <button class="d-none" id="openTaskCreatedModal" data-bs-toggle="modal" data-bs-target="#taskCreatedModal"></button>
 </template>
