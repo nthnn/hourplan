@@ -22,7 +22,7 @@ export default {
         this.updateTasks();
     },
     methods: {
-        updateTasks() {
+        updateTasks(): void {
             setInterval(()=> {
                 $.post(
                     env.host + "/task.php",
@@ -75,7 +75,7 @@ export default {
                 );
             }, 300);
         },
-        handleTaskUpdate() {
+        handleTaskUpdate(): void {
             this.updateTasks();
         }
     }

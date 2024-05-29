@@ -11,10 +11,10 @@ export default {
         endDate: {type: Number}
     },
     computed: {
-        shortStartDate() {
+        shortStartDate(): string {
             return toShortDate(toJSDate(this.startDate as number));
         },
-        shortEndDate() {
+        shortEndDate(): string {
             return toShortDate(toJSDate(this.endDate as number));
         }
     }
@@ -45,6 +45,8 @@ export default {
                     </p>
                 </div>
             </div>
+
+            <div class="col-2 col-2"></div>
         </div>
 
         <small class="text-lato px-2 mb-2 mobile-only text-muted">{{ shortStartDate }} &mdash; {{ shortEndDate }}</small>

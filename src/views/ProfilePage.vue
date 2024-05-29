@@ -4,23 +4,5 @@ import ProfileHeader from "../components/ProfileHeader.vue";
 
 <template>
     <ProfileHeader />
-
     <br/><br/><br/>
-        <br/><br/><br/>
-        <br/><br/><br/>
-        <br/><br/><br/>
-        <br/><br/><br/>
-        <br/><br/><br/>
-        <br/><br/><br/>
-        <br/><br/><br/>
-        <br/><br/><br/>
-        <br/><br/><br/>
-        <br/><br/><br/>
-        <br/><br/><br/>
-        <br/><br/><br/>
-        <br/><br/><br/>
-        <br/><br/><br/>
-        <br/><br/><br/>
-        <br/><br/><br/>
-        <br/><br/><br/>
 </template>

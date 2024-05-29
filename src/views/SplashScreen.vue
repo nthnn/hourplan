@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
-const router = useRouter();
+import { useRouter, type Router } from "vue-router";
 
+const router: Router = useRouter();
 setTimeout(
     ()=> router.push("/login"),
     3000

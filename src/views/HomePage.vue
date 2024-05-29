@@ -4,20 +4,20 @@ import Navbar from "../components/Navbar.vue";
 import NewTaskModal from "../components/NewTaskModal.vue";
 import TaskList from "../components/TaskList.vue";
 
-import { useRouter } from "vue-router";
+import { useRouter, type Router } from "vue-router";
 import { ref, type Ref } from "vue";
 import {
     validateCurrentSession
 } from "@/assets/scripts/session";
 
-const router = useRouter();
+const router: Router = useRouter();
 validateCurrentSession(router);
 setInterval(()=> validateCurrentSession(router), 1000);
 
 const dates: Ref<Date[]> = ref([]);
-const calendarAttr = ref({});
+const calendarAttr: Ref<{}> = ref({});
 
-function updateHighlightedDates() {
+function updateHighlightedDates(): void {
     calendarAttr.value = dates.value.map(date=> ({
         highlight: true,
         dates: date

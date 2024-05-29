@@ -3,9 +3,9 @@ import "../assets/styles/global.css";
 
 import $ from "jquery";
 import env from "../assets/scripts/config";
-import { useRoute } from "vue-router";
+import { useRoute, type RouteLocationNormalizedLoaded } from "vue-router";
 
-const route = useRoute();
+const route: RouteLocationNormalizedLoaded = useRoute();
 const username: string = localStorage.getItem("username") as string;
 
 setTimeout(()=> {
@@ -17,7 +17,7 @@ setTimeout(()=> {
             env.host + "/account.php",
             {
                 action: "logout",
-                hash: localStorage.getItem("hash")
+                hash: localStorage.getItem("hash") as string
             },
             (data)=> {
                 if(data.status == 1) {

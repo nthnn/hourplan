@@ -5,21 +5,21 @@ import $ from "jquery";
 import env from "@/assets/scripts/config";
 import md5 from "md5";
 
-import { useRouter, RouterLink, useRoute } from "vue-router";
+import { useRouter, RouterLink, useRoute, type Router, type RouteLocationNormalizedLoaded } from "vue-router";
 import {
     validateSession
 } from "@/assets/scripts/session";
 
-const router = useRouter();
-const route = useRoute();
+const router: Router = useRouter();
+const route: RouteLocationNormalizedLoaded = useRoute();
 
 validateSession(router, route);
 setInterval(()=> validateSession(router, route), 1000);
 
-function signup() {
-    const username = $("#username").val();
-    const email = $("#email").val();
-    const password = $("#password").val();
+function signup(): void {
+    const username: string = $("#username").val() as string;
+    const email: string = $("#email").val() as string;
+    const password: string = $("#password").val() as string;
 
     $.post(
         env.host + "/account.php",

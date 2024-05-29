@@ -4,23 +4,25 @@ import "../../node_modules/animate.css/animate.min.css";
 import $ from "jquery";
 import env from "@/assets/scripts/config";
 
-import { ref } from "vue";
+import { ref, type Ref } from "vue";
 import { toUNIX } from "@/assets/scripts/time";
 
-const startDate = ref(new Date()),
-    endDate = ref(new Date()),
-    endRepeatDate = ref(new Date());
+const startDate: Ref<Date> = ref(new Date()),
+    endDate: Ref<Date> = ref(new Date()),
+    endRepeatDate: Ref<Date> = ref(new Date());
 
 endDate.value.setDate(endDate.value.getDate() + 1);
 endRepeatDate.value.setDate(endRepeatDate.value.getDate() + 1);
 
 function createNewTask() {
-    const title = $("#task-title").val();
-    const desc = $("#task-desc").val();
-    const startDt = toUNIX(startDate.value);
-    const endDt = toUNIX(endDate.value);
-    const repeat = $("#task-repeat option:selected").val();
-    const type = $("input[name=task-type]:checked").val();
+    const title: string = $("#task-title").val() as string;
+    const desc: string = $("#task-desc").val() as string;
+
+    const startDt: number = toUNIX(startDate.value);
+    const endDt: number = toUNIX(endDate.value);
+
+    const repeat: number = $("#task-repeat option:selected").val() as number;
+    const type: number = $("input[name=task-type]:checked").val() as number;
 
     let ends: any = $("input[name=task-end]:checked").val();
     if(ends == "never")
