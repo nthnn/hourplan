@@ -31,14 +31,23 @@ export default {
                         session: localStorage.getItem("hash") as string
                     },
                     (data: any)=> {
+                        if(this.apiAction == "todays_unfinished_tasks") {
+                            $("#class-task-loading").removeClass("d-block");
+                            $("#class-task-loading").addClass("d-none");
+                        }
+                        else {
+                            $("#class-sched-loading").removeClass("d-block");
+                            $("#class-sched-loading").addClass("d-none");
+                        }
+
                         if(data.status != 1) {
                             if(this.apiAction == "todays_unfinished_tasks") {
-                                $("#class-task-loading").removeClass("d-none");
-                                $("#class-task-loading").addClass("d-block");
+                                $("#todo-no-list").removeClass("d-none");
+                                $("#todo-no-list").addClass("d-block");
                             }
                             else {
-                                $("#class-sched-loading").removeClass("d-none");
-                                $("#class-sched-loading").addClass("d-block");
+                                $("#sched-no-list").removeClass("d-none");
+                                $("#sched-no-list").addClass("d-block");
                             }
 
                             return;
@@ -51,22 +60,22 @@ export default {
 
                         if(data.tasks.length == 0) {
                             if(this.apiAction == "todays_unfinished_tasks") {
-                                $("#class-task-loading").removeClass("d-none");
-                                $("#class-task-loading").addClass("d-block");
+                                $("#todo-no-list").removeClass("d-none");
+                                $("#todo-no-list").addClass("d-block");
                             }
                             else {
-                                $("#class-sched-loading").removeClass("d-none");
-                                $("#class-sched-loading").addClass("d-block");
+                                $("#sched-no-list").removeClass("d-none");
+                                $("#sched-no-list").addClass("d-block");
                             }
                         }
                         else {
                             if(this.apiAction == "todays_unfinished_tasks") {
-                                $("#class-task-loading").removeClass("d-block");
-                                $("#class-task-loading").addClass("d-none");
+                                $("#todo-no-list").removeClass("d-block");
+                                $("#todo-no-list").addClass("d-none");
                             }
                             else {
-                                $("#class-sched-loading").removeClass("d-block");
-                                $("#class-sched-loading").addClass("d-none");
+                                $("#sched-no-list").removeClass("d-block");
+                                $("#sched-no-list").addClass("d-none");
                             }
                         }
 

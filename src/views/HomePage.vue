@@ -112,6 +112,12 @@ setTimeout(()=> {
                     <img src="@/assets/images/cat-loading.gif" width="150" />
                 </div>
 
+                <div id="sched-no-list" class="d-none" align="center">
+                    <br/>
+                    <img src="@/assets/images/cat-delighted.png" width="150" />
+                    <p>No schedules in range!</p>
+                </div>
+
                 <TaskList apiAction="todays_unfinished_schedules" />
             </div>
 
@@ -122,6 +128,12 @@ setTimeout(()=> {
                 <div id="class-task-loading" align="center">
                     <br/>
                     <img src="@/assets/images/cat-loading.gif" width="150" />
+                </div>
+
+                <div id="todo-no-list" class="d-none" align="center">
+                    <br/>
+                    <img src="@/assets/images/cat-delighted.png" width="150" />
+                    <p>No task in range!</p>
                 </div>
 
                 <TaskList apiAction="todays_unfinished_tasks" />
