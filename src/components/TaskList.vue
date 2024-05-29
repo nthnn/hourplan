@@ -89,7 +89,7 @@ export default {
         :title="task[2]"
         :desc="task[3]"
         :color="task[7]"
-        :startDate="task[4]"
-        :endDate="task[5]"
+        :startDate="parseInt(task[4])"
+        :endDate="parseInt(task[5])"
         :emotion="'crying'" />
 </template>
