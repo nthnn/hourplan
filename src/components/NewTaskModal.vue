@@ -10,7 +10,6 @@ import { toUNIX } from "@/assets/scripts/time";
 const startDate = ref(new Date()),
     endDate = ref(new Date()),
     endRepeatDate = ref(new Date());
-const taskColor = ref("#a9b7fa");
 
 endDate.value.setDate(endDate.value.getDate() + 1);
 endRepeatDate.value.setDate(endRepeatDate.value.getDate() + 1);
@@ -52,7 +51,7 @@ function createNewTask() {
             start_dt: startDt,
             end_dt: endDt,
             repeat: repeat,
-            color: taskColor.value,
+            color: $("#task-color").val(),
             ends: ends,
             type: type
         },
@@ -110,7 +109,7 @@ function createNewTask() {
                         </div>
 
                         <div class="col-2 col-lg-2 pe-lg-4">
-                            <input type="color" class="form-control outline-none border-none p-0 m-0 me-lg-4 h-100" v-bind:value="taskColor" />
+                            <input type="color" id="task-color" class="form-control outline-none border-none p-0 m-0 me-lg-4 h-100" value="#a9b7fa" />
                         </div>
                     </div>
 
