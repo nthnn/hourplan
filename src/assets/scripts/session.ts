@@ -55,8 +55,6 @@ function validateSession(router: Router, routeLoc: RouteLocationNormalizedLoaded
                 return;
             }
 
-            console.log(routeLoc.name);
-            console.log(routeLoc.name != "login");
             if(routeLoc.name != "login")
                 router.push("/login");
         }
