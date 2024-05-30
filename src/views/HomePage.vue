@@ -35,6 +35,13 @@ setInterval(()=> {
             session: localStorage.getItem("hash") as string
         },
         (data: any)=> {
+            const currentDate: Date = new Date();
+            const currentDayMarker: JQuery<HTMLElement> = $(".id-" + currentDate.getFullYear() +
+                "-" + (currentDate.getMonth() + 1 <= 9 ? "0" : "") + (currentDate.getMonth() + 1) +
+                "-" + (currentDate.getDate() <= 9 ? "0" : "") + currentDate.getDate() +
+                " .vc-day-content");
+            currentDayMarker.addClass("vc-day-current");
+
             if(data.status == 1) {
                 dates.value = [];
                 data.dates.forEach((date: any)=>
@@ -57,19 +64,6 @@ setTimeout(()=> {
             } as any
         )
     );
-
-    const currentDate: Date = new Date();
-    const currentDayMarker: JQuery<HTMLElement> = $(".id-" + currentDate.getFullYear() +
-        "-" + (currentDate.getMonth() + 1 <= 9 ? "0" : "") + (currentDate.getMonth() + 1) +
-        "-" + (currentDate.getDate() <= 9 ? "0" : "") + currentDate.getDate() +
-        " .vc-day-content");
-
-    currentDayMarker.css({
-        "outline-color": "#ebb797",
-        "border-color": "#ebb797",
-        "background-color": "#ebb797",
-        "color": "#1a172a"
-    });
 }, 200);
 </script>
 
