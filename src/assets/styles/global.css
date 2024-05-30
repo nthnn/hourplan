@@ -47,7 +47,7 @@ html.overflow-hidden, body.overflow-hidden {
     padding: 16px !important;
 }
 
-.clr-primary, .vc-highlight-bg-solid {
+.clr-primary {
     background-color: #1a172a !important;
 }
 
@@ -101,6 +101,29 @@ html.overflow-hidden, body.overflow-hidden {
     background-color: white !important;
 }
 
+.vc-highlight-bg-solid {
+    background-color: #93c5fc !important;
+}
+
+.vc-day-content {
+    color: #1a172a !important;
+}
+
+.vc-day-current {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--vc-text-sm);
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    border-radius: var(--vc-rounded-full);
+    user-select: none;
+    border-color: #1a172a;
+    background-color: #1a172a !important;
+    color: white !important;
+}
+
 #date-picker {
     padding: 4px;
     border-width: 2px !important;
@@ -120,7 +143,7 @@ html.overflow-hidden, body.overflow-hidden {
 .vc-time-month,
 .vc-time-year,
 .vc-time-select-group svg {
-    color: #1a172a !important;
+    color: #d6d6d6 !important;
 }
 
 @media only screen and (max-width: 771px) {
