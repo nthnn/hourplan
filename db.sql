@@ -25,5 +25,6 @@ CREATE TABLE task (
     `color` varchar(7) NOT NULL,
     `ends` int(10) NOT NULL,
     `type` int(1) NOT NULL,
-    `is_finished` int(1) NOT NULL
+    `is_finished` int(1) NOT NULL,
+    `categories` varchar(255) NOT NULL
 );
