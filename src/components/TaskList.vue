@@ -4,7 +4,7 @@ import env from "@/assets/scripts/config";
 import md5 from "md5";
 import TaskCard from "../components/TaskCard.vue";
 
-let prevTodoListHash: string = "";
+let prevTodoListHash: {[action: string]: string} = {};
 export default {
     props: {
         apiAction: {type: String},
@@ -14,75 +14,73 @@ export default {
     },
     data() {
         return {
-            tasks: [],
-            classes: []
+            tasks: []
         }
     },
     created() {
+        this.fetchData();
         this.updateTasks();
     },
     methods: {
-        updateTasks(): void {
-            setInterval(()=> {
-                $.post(
-                    env.host + "/task.php",
-                    {
-                        action: this.apiAction,
-                        session: localStorage.getItem("hash") as string
-                    },
-                    (data: any)=> {
-                        if(this.apiAction == "todays_unfinished_tasks") {
-                            $("#class-task-loading").removeClass("d-block");
-                            $("#class-task-loading").addClass("d-none");
-                        }
-                        else {
-                            $("#class-sched-loading").removeClass("d-block");
-                            $("#class-sched-loading").addClass("d-none");
-                        }
+        fetchData(): void {
+            $.post(
+                env.host + "/task.php",
+                {
+                    action: this.apiAction,
+                    session: localStorage.getItem("hash") as string
+                },
+                (data: any)=> {
+                    if(this.apiAction == "todays_unfinished_tasks")
+                        $("#class-task-loading")
+                            .removeClass("d-block")
+                            .addClass("d-none");
+                    else $("#class-sched-loading")
+                        .removeClass("d-block")
+                        .addClass("d-none");
 
-                        if(data.status != 1) {
-                            if(this.apiAction == "todays_unfinished_tasks") {
-                                $("#todo-no-list").removeClass("d-none");
-                                $("#todo-no-list").addClass("d-block");
-                            }
-                            else {
-                                $("#sched-no-list").removeClass("d-none");
-                                $("#sched-no-list").addClass("d-block");
-                            }
+                    if(data.status != 1) {
+                        if(this.apiAction == "todays_unfinished_tasks")
+                            $("#todo-no-list")
+                                .removeClass("d-none")
+                                .addClass("d-block");
+                        else $("#sched-no-list")
+                            .removeClass("d-none")
+                            .addClass("d-block");
 
-                            return;
-                        }
-
-                        const currentHash = md5(JSON.stringify(data));
-                        if(prevTodoListHash === currentHash)
-                            return;
-                        prevTodoListHash = currentHash;
-
-                        if(data.tasks.length == 0) {
-                            if(this.apiAction == "todays_unfinished_tasks") {
-                                $("#todo-no-list").removeClass("d-none");
-                                $("#todo-no-list").addClass("d-block");
-                            }
-                            else {
-                                $("#sched-no-list").removeClass("d-none");
-                                $("#sched-no-list").addClass("d-block");
-                            }
-                        }
-                        else {
-                            if(this.apiAction == "todays_unfinished_tasks") {
-                                $("#todo-no-list").removeClass("d-block");
-                                $("#todo-no-list").addClass("d-none");
-                            }
-                            else {
-                                $("#sched-no-list").removeClass("d-block");
-                                $("#sched-no-list").addClass("d-none");
-                            }
-                        }
-
-                        this.tasks = data.tasks;
+                        return;
                     }
-                );
-            }, 300);
+
+                    const currentHash = md5(JSON.stringify(data));
+                    if(prevTodoListHash[this.apiAction as string] === currentHash)
+                        return;
+                    prevTodoListHash[this.apiAction as string] = currentHash;
+
+                    if(data.tasks.length == 0) {
+                        if(this.apiAction == "todays_unfinished_tasks")
+                            $("#todo-no-list")
+                                .removeClass("d-none")
+                                .addClass("d-block");
+                        else $("#sched-no-list")
+                            .removeClass("d-none")
+                            .addClass("d-block");
+                    }
+                    else {
+                        if(this.apiAction == "todays_unfinished_tasks")
+                            $("#todo-no-list")
+                                .removeClass("d-block")
+                                .addClass("d-none");
+                        else $("#sched-no-list")
+                            .removeClass("d-block")
+                            .addClass("d-none");
+                    }
+
+                    console.log(data);
+                    this.tasks = data.tasks;
+                }
+            );
+        },
+        updateTasks(): void {
+            setInterval(this.fetchData, 300);
         },
         handleTaskUpdate(): void {
             this.updateTasks();
