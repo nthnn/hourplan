@@ -52,8 +52,8 @@
                 "INSERT INTO task ".
                     "(`user_id`, `title`, `desc`, `start`, `end`, `repeat`, `ends`, `type`, `color`, `is_finished`) VALUES (".
                     $sessionId.", ".
-                    "\"".$title."\", ".
-                    "\"".$desc."\", ".
+                    "\"".base64_encode(htmlentities($title))."\", ".
+                    "\"".base64_encode(htmlentities($desc))."\", ".
                     $start_dt.", ".
                     $end_dt.", ".
                     $repeat.", ".
