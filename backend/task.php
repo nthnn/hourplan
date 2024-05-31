@@ -134,6 +134,40 @@
                 ))
             );
         }
+
+        public static function markTask($session, $id, $finished) {
+            global $db_conn;
+
+            $sessionId = getSessionUserId($session);
+            if($sessionId < 0) {
+                respondError("Invalid session user ID.");
+                return;
+            }
+
+            if(!validateNumber($id)) {
+                respondError("Invalid task ID.");
+                return;
+            }
+
+            if($finished != "0" && $finished != "1") {
+                respondError("Invalid finished status value.");
+                return;
+            }
+
+            $result = mysqli_query(
+                $db_conn,
+                "UPDATE task SET is_finished=".$finished." ".
+                    "WHERE user_id=".$sessionId." AND id=".$id
+            );
+
+            if(!$result) {
+                respondFailed();
+                return;
+            }
+
+            respondOk();
+            return;
+        }
     }
 
     if($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -195,6 +229,17 @@
             $session = $_POST["session"];
 
             Task::highlightableDates($session);
+            return;
+        }
+        else if($action == "mark_task" &&
+            isset($_POST["session"]) && !empty($_POST["session"]) &&
+            isset($_POST["id"]) && $_POST["id"] != "" &&
+            isset($_POST["finished"]) && $_POST["finished"] != "") {
+            $hash = $_POST["session"];
+            $id = $_POST["id"];
+            $finished = $_POST["finished"];
+
+            Task::markTask($hash, $id, $finished);
             return;
         }
     }
