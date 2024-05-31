@@ -3,6 +3,7 @@ import $ from "jquery";
 import env from "@/assets/scripts/config";
 import md5 from "md5";
 import TaskCard from "../components/TaskCard.vue";
+import { base64ToString } from "@/assets/scripts/base64";
 import { toUNIX } from "@/assets/scripts/time";
 
 let prevTodoListHash: {[action: string]: string} = {};
@@ -30,6 +31,7 @@ export default {
         clearInterval(this.fetchTask);
     },
     methods: {
+        base64ToString,
         fetchData(): void {
             $.post(
                 env.host + "/task.php",
@@ -107,8 +109,8 @@ export default {
     <TaskCard
         v-for="(task, index) in tasks"
         :key="index"
-        :title="task[2]"
-        :desc="task[3]"
+        :title="base64ToString(task[2])"
+        :desc="base64ToString(task[3])"
         :color="task[7]"
         :startDate="parseInt(task[4])"
         :endDate="parseInt(task[5])"
