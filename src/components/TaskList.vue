@@ -14,12 +14,17 @@ export default {
     },
     data() {
         return {
-            tasks: []
+            tasks: [],
+            fetchTask: 0
         }
     },
-    created() {
+    mounted() {
+        this.$forceUpdate();
         this.fetchData();
         this.updateTasks();
+    },
+    beforeDestroy() {
+        clearInterval(this.fetchTask);
     },
     methods: {
         fetchData(): void {
@@ -38,6 +43,11 @@ export default {
                         .removeClass("d-block")
                         .addClass("d-none");
 
+                    const currentHash = md5(JSON.stringify(data));
+                    if(prevTodoListHash[this.apiAction as string] === currentHash)
+                        return;
+                    prevTodoListHash[this.apiAction as string] = currentHash;
+
                     if(data.status != 1) {
                         if(this.apiAction == "todays_unfinished_tasks")
                             $("#todo-no-list")
@@ -49,11 +59,6 @@ export default {
 
                         return;
                     }
-
-                    const currentHash = md5(JSON.stringify(data));
-                    if(prevTodoListHash[this.apiAction as string] === currentHash)
-                        return;
-                    prevTodoListHash[this.apiAction as string] = currentHash;
 
                     if(data.tasks.length == 0) {
                         if(this.apiAction == "todays_unfinished_tasks")
@@ -74,13 +79,12 @@ export default {
                             .addClass("d-none");
                     }
 
-                    console.log(data);
                     this.tasks = data.tasks;
                 }
             );
         },
         updateTasks(): void {
-            setInterval(this.fetchData, 300);
+            this.fetchTask = setInterval(this.fetchData, 300);
         },
         handleTaskUpdate(): void {
             this.updateTasks();
