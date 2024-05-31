@@ -1,0 +1,19 @@
+name: Vue CI Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.8.0'
+
+      - name: Installing modules and dependencies
+        run: npm install
+        
+      - name: Building HourPlan
+        run: npm run build
