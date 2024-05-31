@@ -4,11 +4,12 @@ import "../assets/styles/global.css";
 import $ from "jquery";
 import env from "../assets/scripts/config";
 import { useRoute, type RouteLocationNormalizedLoaded } from "vue-router";
+import { onMounted } from "vue";
 
 const route: RouteLocationNormalizedLoaded = useRoute();
 const username: string = localStorage.getItem("username") as string;
 
-setTimeout(()=> {
+onMounted(()=> {
     $("#" + (route.name as string) + "-route").addClass("selected-menu");
     $("#mb-" + (route.name as string) + "-route").addClass("menu-selected");
 
@@ -28,7 +29,7 @@ setTimeout(()=> {
             }
         );
     });
-}, 10);
+});
 </script>
 
 <template>
