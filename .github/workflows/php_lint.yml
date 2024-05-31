@@ -1,0 +1,16 @@
+name: PHP Lint
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+
+    steps:
+      - name: PHP Syntax Checker (Lint)
+        uses: StephaneBour/actions-php-lint@8.2
+        with:
+          dir: '.'
