@@ -5,14 +5,11 @@ import Navbar from "../components/Navbar.vue";
 import NewTaskModal from "../components/NewTaskModal.vue";
 import TaskList from "../components/TaskList.vue";
 
-import { ref, type Ref } from "vue";
+import { createVNode, onMounted, ref, type Ref, render } from "vue";
 import {
     validateCurrentSession
 } from "@/assets/scripts/session";
 import { toJSDate } from "@/assets/scripts/time";
-
-validateCurrentSession();
-setInterval(()=> validateCurrentSession(), 1000);
 
 const dates: Ref<Array<Date[]>> = ref([]);
 const calendarAttr: Ref<Array<any>> = ref([]);
@@ -52,7 +49,10 @@ setInterval(()=> {
     );
 }, 300);
 
-setTimeout(()=> {
+validateCurrentSession();
+setInterval(validateCurrentSession, 1000);
+
+onMounted(()=> {
     $("#date-elem").html(
         new Date().toLocaleDateString(
             'en-US',
@@ -64,7 +64,25 @@ setTimeout(()=> {
             } as any
         )
     );
-}, 200);
+
+    setInterval(()=> {
+        render(
+            createVNode(
+                TaskList,
+                {apiAction: "todays_unfinished_tasks"}
+            ),
+            document.getElementById("task-list-container") as HTMLElement
+        );
+
+        render(
+            createVNode(
+                TaskList,
+                {apiAction: "todays_unfinished_schedules"}
+            ),
+            document.getElementById("sched-list-container") as HTMLElement
+        );
+    }, 1000);
+});
 </script>
 
 <template>
@@ -110,7 +128,8 @@ setTimeout(()=> {
                     <p>No schedules in range!</p>
                 </div>
 
-                <TaskList apiAction="todays_unfinished_schedules" />
+                <div id="sched-list-container"></div>
+                <!--<TaskList apiAction="todays_unfinished_schedules" />-->
             </div>
 
             <div class="col-lg-6">
@@ -128,7 +147,8 @@ setTimeout(()=> {
                     <p>No task in range!</p>
                 </div>
 
-                <TaskList apiAction="todays_unfinished_tasks" />
+                <div id="task-list-container"></div>
+                <!--<TaskList apiAction="todays_unfinished_tasks" />-->
             </div>
         </div>
     </div>
