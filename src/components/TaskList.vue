@@ -3,8 +3,10 @@ import $ from "jquery";
 import env from "@/assets/scripts/config";
 import md5 from "md5";
 import TaskCard from "../components/TaskCard.vue";
+import { toUNIX } from "@/assets/scripts/time";
 
 let prevTodoListHash: {[action: string]: string} = {};
+
 export default {
     props: {
         apiAction: {type: String},
@@ -14,8 +16,9 @@ export default {
     },
     data() {
         return {
-            tasks: [],
-            fetchTask: 0
+            tasks: [] as any,
+            emotions: [] as Array<string>,
+            fetchTask: 0 as number
         }
     },
     mounted() {
@@ -80,6 +83,13 @@ export default {
                     }
 
                     this.tasks = data.tasks;
+
+                    const currentUNIXstamp: number = toUNIX(new Date());
+                    for(let i = 0; i < this.tasks.length; i++)
+                        if(currentUNIXstamp > parseInt(this.tasks[i][4]))
+                            this.emotions[i] = "crying";
+                        else this.emotions[i] = (["happy", "delighted"] as Array<string>)
+                            [Math.round(Math.random())];
                 }
             );
         },
@@ -102,5 +112,5 @@ export default {
         :color="task[7]"
         :startDate="parseInt(task[4])"
         :endDate="parseInt(task[5])"
-        :emotion="'crying'" />
+        :emotion="emotions[index]" />
 </template>
