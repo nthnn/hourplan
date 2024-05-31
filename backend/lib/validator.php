@@ -44,4 +44,11 @@ function validateUuid($uuid) {
     ) === 1;
 }
 
+function validateNumber($number) {
+    return filter_var(
+        trim($number),
+        FILTER_VALIDATE_INT
+    ) !== false;
+}
+
 ?>
