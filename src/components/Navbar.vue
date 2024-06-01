@@ -33,7 +33,7 @@ onMounted(()=> {
 </script>
 
 <template>
-    <div class="clr-primary hp-navbar p-3 d-fixed fixed-top desktop-only">
+    <div class="clr-primary hp-navbar p-3 d-fixed fixed-top desktop-only shadow">
         <div class="row">
             <div class="col-6 mt-1">
                 <RouterLink to="/profile" class="text-decoration-none">
