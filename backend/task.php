@@ -91,9 +91,11 @@
                     "   (".$endOfDay." BETWEEN start AND end) OR".
                     "   (start BETWEEN ".$startOfDay." AND ".$endOfDay.") OR".
                     "   (end BETWEEN ".$startOfDay." AND ".$endOfDay."))".
-                    "AND type=".$type." ".
-                    "AND user_id=".$sessionId." ".
-                    "AND is_finished=".$isFinished
+                    "AND user_id=".$sessionId.
+                    ($type != 2 ?
+                        " AND type=".$type." ".
+                        "AND is_finished=".$isFinished : ""
+                    )
             );
 
             if(!$result) {
@@ -226,6 +228,13 @@
             $session = $_POST["session"];
 
             Task::fetchTodaysTasks($session, 1, 0);
+            return;
+        }
+        else if($action == "all_task" &&
+            isset($_POST["session"]) && !empty($_POST["session"])) {
+            $session = $_POST["session"];
+
+            Task::fetchTodaysTasks($session, 2, 0);
             return;
         }
         else if($action == "highlightable_dates" &&
