@@ -1,23 +1,38 @@
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
 import NewTaskModal from "../components/NewTaskModal.vue";
+</script>
 
+<script lang="ts">
+import $ from "jquery";
 import {
     validateCurrentSession
 } from "@/assets/scripts/session";
 
-validateCurrentSession();
-setInterval(()=> validateCurrentSession(), 1000);
+export default {
+    created() {
+        validateCurrentSession();
+        setInterval(validateCurrentSession, 1000);
 
-const currentDate: string = new Date().toLocaleDateString(
-    'en-US',
-    {
-        weekday: 'short',
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric'
-    } as any
-);
+        this.renderDateTime();
+        setInterval(this.renderDateTime, 1000);
+    },
+    methods: {
+        renderDateTime(): void {
+            $("#date-elem").html(
+                new Date().toLocaleDateString(
+                    'en-US',
+                    {
+                        weekday: 'short',
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric'
+                    } as any
+                )
+            );
+        }
+    }
+};
 </script>
 
 <template>
@@ -27,7 +42,7 @@ const currentDate: string = new Date().toLocaleDateString(
         <div class="row mt-4 px-2 px-lg-4">
             <div class="col-7">
                 <div class="d-inline-block w-auto px-2 px-lg-4 py-2 outlined-secondary brdr-secondary" align="center">
-                    <p class="text-lato m-0">{{ currentDate }}</p>
+                    <p id="date-elem" class="text-lato m-0"></p>
                 </div>
             </div>
 
