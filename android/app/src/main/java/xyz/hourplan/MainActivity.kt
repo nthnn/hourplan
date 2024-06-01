@@ -1,48 +1,43 @@
 package xyz.hourplan
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import xyz.hourplan.ui.theme.HourPlanTheme
+import android.os.Handler
+import android.os.Looper
+import android.view.Window
+import android.webkit.*
+import android.widget.Toast
 
+class MainActivity : Activity() {
+    private var shouldExit: Boolean = false
 
-class MainActivity : ComponentActivity() {
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            HourPlanTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                            name = "Android",
-                            modifier = Modifier.padding(innerPadding)
-                    )
-                }
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        this.setContentView(R.layout.activity_main)
+
+        val webView: WebView = findViewById(R.id.main_web_view)
+        webView.settings.allowContentAccess = true
+        webView.settings.javaScriptEnabled = true
+
+        WebView.setWebContentsDebuggingEnabled(true)
+        webView.loadUrl("https://hourplan.000webhostapp.com/")
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        when {
+            this.shouldExit -> this.finish()
+            else -> {
+                Toast.makeText(this, "Press back again to exit.", Toast.LENGTH_SHORT).show()
+                shouldExit = true
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    shouldExit = false
+                }, 3000)
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-            text = "Hello $name!",
-            modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    HourPlanTheme {
-        Greeting("Android")
     }
 }
