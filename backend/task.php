@@ -12,7 +12,7 @@
             $title, $desc,
             $start_dt, $end_dt,
             $repeat, $color, $ends,
-            $type, $session
+            $type, $session, $categories
         ) {
             if(!validateUnixTimestamp($start_dt) ||
                 !validateUnixTimestamp($end_dt)) {
@@ -50,7 +50,7 @@
             $res = mysqli_query(
                 $db_conn,
                 "INSERT INTO task ".
-                    "(`user_id`, `title`, `desc`, `start`, `end`, `repeat`, `ends`, `type`, `color`, `is_finished`) VALUES (".
+                    "(`user_id`, `title`, `desc`, `start`, `end`, `repeat`, `ends`, `type`, `color`, `categories`, `is_finished`) VALUES (".
                     $sessionId.", ".
                     "\"".base64_encode(htmlentities($title))."\", ".
                     "\"".base64_encode(htmlentities($desc))."\", ".
@@ -59,7 +59,8 @@
                     $repeat.", ".
                     $ends.", ".
                     $type.", ".
-                    "\"".$color."\", 0)"
+                    "\"".$color."\", ".
+                    "\"".base64_encode(htmlentities($categories))."\", 0)"
             );
 
             if(!$res) {
@@ -186,7 +187,8 @@
             isset($_POST["repeat"]) && $_POST["repeat"] != "" &&
             isset($_POST["color"]) && $_POST["color"] != "" &&
             isset($_POST["ends"]) && $_POST["ends"] != "" &&
-            isset($_POST["type"]) && $_POST["type"] != "") {
+            isset($_POST["type"]) && $_POST["type"] != "" &&
+            isset($_POST["categories"])) {
             $session = $_POST["session"];
             $title = $_POST["title"];
             $desc = $_POST["desc"];
@@ -196,6 +198,7 @@
             $color = $_POST["color"];
             $ends = $_POST["ends"];
             $type = $_POST["type"];
+            $categories = $_POST["categories"];
     
             Task::create(
                 $title,
@@ -206,7 +209,8 @@
                 $color,
                 $ends,
                 $type,
-                $session
+                $session,
+                $categories
             );
             return;
         }
