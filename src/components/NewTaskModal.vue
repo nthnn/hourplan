@@ -4,7 +4,7 @@ import "../../node_modules/animate.css/animate.min.css";
 import $ from "jquery";
 import env from "@/assets/scripts/config";
 
-import { ref, type Ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import { toUNIX } from "@/assets/scripts/time";
 
 const startDate: Ref<Date> = ref(new Date()),
@@ -87,6 +87,29 @@ function createNewTask() {
         }
     );
 }
+
+onMounted(()=> {
+    const newTaskModal: HTMLElement = document.getElementById("newTaskModal") as HTMLElement;
+
+    newTaskModal.addEventListener("hide.bs.modal", ()=> {
+        $("#task-title").val("");
+        $("#task-desc").val("");
+        $("#task-color").val("#a9b7fa");
+        $("#task-repeat option:selected").prop("selected", false);
+
+        $("input[name=task-type]:checked").prop("checked", false);
+        $("input[name=task-end]:checked").prop("checked", false);
+    });
+
+    newTaskModal.addEventListener("show.bs.modal", ()=> {
+        startDate.value = new Date();
+        endDate.value = new Date();
+        endRepeatDate.value = new Date();
+
+        endDate.value.setDate(endDate.value.getDate() + 1);
+        endRepeatDate.value.setDate(endRepeatDate.value.getDate() + 1);
+    });
+});
 </script>
 
 <template>
