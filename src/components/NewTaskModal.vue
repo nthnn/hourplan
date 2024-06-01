@@ -17,6 +17,7 @@ endRepeatDate.value.setDate(endRepeatDate.value.getDate() + 1);
 function createNewTask() {
     const title: string = $("#task-title").val() as string;
     const desc: string = $("#task-desc").val() as string;
+    const categories: string = $("#task-categories").val() as string;
 
     const startDt: number = toUNIX(startDate.value);
     const endDt: number = toUNIX(endDate.value);
@@ -29,8 +30,8 @@ function createNewTask() {
         ends = 0;
     else ends = toUNIX(endRepeatDate.value);
 
-    if(type == undefined || repeat == undefined) {
-        $("#create-error").html("Repeat and type must have a selected value.");
+    const showError = (message: string): void => {
+        $("#create-error").html(message);
         $("#create-error").removeClass("d-none");
 
         $("#create-error").addClass("animate__shakeX");
@@ -40,6 +41,25 @@ function createNewTask() {
             ()=> $("#create-error").removeClass("animate__shakeX"),
             1500
         );
+    };
+
+    if(title == undefined || title == "") {
+        showError("Invalid task title string.");
+        return;
+    }
+
+    if(desc == undefined || desc == "") {
+        showError("Invalid task description string.");
+        return;
+    }
+
+    if(repeat == undefined) {
+        showError("Repeat must have a selected value.");
+        return;
+    }
+
+    if(type == undefined) {
+        showError("Type must have a selected value.");
         return;
     }
 
@@ -55,7 +75,8 @@ function createNewTask() {
             repeat: repeat,
             color: $("#task-color").val(),
             ends: ends,
-            type: type
+            type: type,
+            categories: categories
         },
         (data: any)=> {
             $("#create-error").removeClass("d-block");
@@ -74,16 +95,7 @@ function createNewTask() {
                 return;
             }
 
-            $("#create-error").html(data.error);
-            $("#create-error").removeClass("d-none");
-
-            $("#create-error").addClass("animate__shakeX");
-            $("#create-error").addClass("d-block");
-
-            setTimeout(
-                ()=> $("#create-error").removeClass("animate__shakeX"),
-                1500
-            );
+            showError(data.error);
         }
     );
 }
@@ -94,9 +106,10 @@ onMounted(()=> {
     newTaskModal.addEventListener("hide.bs.modal", ()=> {
         $("#task-title").val("");
         $("#task-desc").val("");
+        $("#task-categories").val("");
         $("#task-color").val("#a9b7fa");
-        $("#task-repeat option:selected").prop("selected", false);
 
+        $("#task-repeat option:selected").prop("selected", false);
         $("input[name=task-type]:checked").prop("checked", false);
         $("input[name=task-end]:checked").prop("checked", false);
     });
@@ -203,8 +216,11 @@ onMounted(()=> {
                             <label for="task-type" class="form-label text-lato">Schedule</label>
                         </div>
                     </div>
-                    <p class="text-lato text-danger" id="create-error"></p>
 
+                    <label for="task-categories" class="form-label text-lato">Categories</label>
+                    <input type="text" class="form-control text-lato" id="task-categories" placeholder="List of categories (e.g.: class,job,etc.)" />
+
+                    <p class="text-lato text-danger" id="create-error"></p>
                     <div align="right">
                         <button
                             class="btn clr-secondary text-lato brdr-dark"
