@@ -109,6 +109,7 @@ export default {
     <TaskCard
         v-for="(task, index) in tasks"
         :key="index"
+        :id="parseInt(task[0])"
         :title="base64ToString(task[2])"
         :desc="base64ToString(task[3])"
         :color="task[7]"

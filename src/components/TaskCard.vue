@@ -1,5 +1,6 @@
 <script lang="ts">
 import $ from "jquery";
+import env from "@/assets/scripts/config";
 import { toJSDate, toShortDate } from '@/assets/scripts/time';
 
 export default {
@@ -9,6 +10,7 @@ export default {
         }
     },
     props: {
+        id: {type: Number},
         title: {type: String},
         desc: {type: String},
         color: {type: String},
@@ -26,7 +28,16 @@ export default {
     },
     methods: {
         onMarked(): void {
-            alert($("#" + this.taskId).is(":checked"));
+            $.post(
+                env.host + "/task.php",
+                {
+                    action: "mark_task",
+                    id: this.id,
+                    session: localStorage.getItem("hash") as string,
+                    finished: $("#" + this.taskId).is(":checked") ? "1" : "0"
+                },
+                (_: any)=> { }
+            );
         }
     }
 };
