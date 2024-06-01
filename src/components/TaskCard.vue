@@ -11,6 +11,8 @@ export default {
     },
     props: {
         id: {type: Number},
+        finished: {type: Boolean},
+        large: {type: Boolean},
         title: {type: String},
         desc: {type: String},
         color: {type: String},
@@ -72,7 +74,8 @@ export default {
                 <div class="d-flex align-items-center h-100 w-100 m-0 p-0">
                     <input type="checkbox"
                         class="form-check-input" value=""
-                        :id=taskId @click="onMarked" />
+                        :checked=finished :id=taskId :disabled=finished
+                        @click="onMarked" />
                 </div>
             </div>
         </div>
