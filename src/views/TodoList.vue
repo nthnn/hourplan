@@ -1,23 +1,56 @@
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
 import NewTaskModal from "../components/NewTaskModal.vue";
+</script>
+
+<script lang="ts">
+import $ from "jquery";
+import { createVNode, render } from "vue";
 
 import {
     validateCurrentSession
 } from "@/assets/scripts/session";
+import TaskList from "@/components/TaskList.vue";
 
-validateCurrentSession();
-setInterval(()=> validateCurrentSession(), 1000);
+export default {
+    created() {
+        validateCurrentSession();
+        setInterval(validateCurrentSession, 1000);
 
-const currentDate: string = new Date().toLocaleDateString(
-    'en-US',
-    {
-        weekday: 'short',
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric'
-    } as any
-);
+        this.renderDateTime();
+        setInterval(this.renderDateTime, 1000);
+    },
+    mounted() {
+        this.renderTaskList();
+    },
+    methods: {
+        renderDateTime(): void {
+            $("#date-elem").html(
+                new Date().toLocaleDateString(
+                    'en-US',
+                    {
+                        weekday: 'short',
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric'
+                    } as any
+                )
+            );
+        },
+        renderTaskList(): void {
+            const listContainer: HTMLElement | null = document.getElementById("list-container");
+
+            if(listContainer)
+                render(
+                    createVNode(
+                        TaskList,
+                        {apiAction: "all_task", large: true}
+                    ),
+                    listContainer
+                );
+        }
+    }
+};
 </script>
 
 <template>
@@ -27,7 +60,7 @@ const currentDate: string = new Date().toLocaleDateString(
         <div class="row mt-4 px-2 px-lg-4">
             <div class="col-7">
                 <div class="d-inline-block w-auto px-2 px-lg-4 py-2 outlined-secondary brdr-secondary" align="center">
-                    <p class="text-lato m-0">{{ currentDate }}</p>
+                    <p id="date-elem" class="text-lato m-0"></p>
                 </div>
             </div>
 
@@ -39,14 +72,26 @@ const currentDate: string = new Date().toLocaleDateString(
                 </div>
             </div>
         </div>
-        <br/><br class="desktop-only" />
 
-        <div class="d-block" align="center">
+        <div id="class-tlist-loading" class="d-block" align="center">
+            <br/>
+            <br class="desktop-only" />
             <br/><br/>
+
             <img src="@/assets/images/cat-loading.gif" width="200" />
         </div>
 
-        <br/><br/>
+        <div id="list-no-task" class="d-none" align="center">
+            <br/>
+            <img src="@/assets/images/cat-delighted.png" width="150" />
+            <p>To-do list has no tasks yet!</p>
+        </div>
+
+        <br/>
+        <div class="container">
+            <div id="list-container"></div>
+        </div>
+        <br/>
     </div>
 
     <br/><br/>
