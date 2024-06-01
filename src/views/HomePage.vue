@@ -1,88 +1,111 @@
 <script setup lang="ts">
-import $ from "jquery";
-import env from "@/assets/scripts/config";
 import Navbar from "../components/Navbar.vue";
 import NewTaskModal from "../components/NewTaskModal.vue";
 import TaskList from "../components/TaskList.vue";
+</script>
 
-import { createVNode, onMounted, ref, type Ref, render } from "vue";
+<script lang="ts">
+import $ from "jquery";
+import env from "@/assets/scripts/config";
+
+import { createVNode, render } from "vue";
 import {
     validateCurrentSession
 } from "@/assets/scripts/session";
 import { toJSDate } from "@/assets/scripts/time";
 
-const dates: Ref<Array<Date[]>> = ref([]);
-const calendarAttr: Ref<Array<any>> = ref([]);
+export default {
+    created() {
+        this.renderDateTime();
+        this.renderHighlightedDates();
+        validateCurrentSession();
 
-function updateHighlightedDates(): void {
-    calendarAttr.value = [];
-    dates.value.forEach(date=> {
-        calendarAttr.value.push({
-            highlight: true,
-            dates: [[date[0], date[1]]]
-        });
-    });
-}
-
-setInterval(()=> {
-    $.post(
-        env.host + "/task.php",
-        {
-            action: "highlightable_dates",
-            session: localStorage.getItem("hash") as string
-        },
-        (data: any)=> {
-            const currentDate: Date = new Date();
-            const currentDayMarker: JQuery<HTMLElement> = $(".id-" + currentDate.getFullYear() +
-                "-" + (currentDate.getMonth() + 1 <= 9 ? "0" : "") + (currentDate.getMonth() + 1) +
-                "-" + (currentDate.getDate() <= 9 ? "0" : "") + currentDate.getDate() +
-                " .vc-day-content");
-            currentDayMarker.addClass("vc-day-current");
-
-            if(data.status == 1) {
-                dates.value = [];
-                data.dates.forEach((date: any)=>
-                    dates.value.push([toJSDate(parseInt(date[0])), toJSDate(parseInt(date[1]))]));
-                updateHighlightedDates();
-            }
+        setInterval(validateCurrentSession, 1000);
+        setInterval(this.renderDateTime, 1000);
+        setInterval(this.renderHighlightedDates, 1000);
+    },
+    mounted() {
+        this.renderDateTime();
+        this.renderHighlightedDates();
+        this.renderTodoList();
+    },
+    data() {
+        return {
+            dates: [] as Array<Array<Date>>,
+            calendarAttr: [] as Array<any>
         }
-    );
-}, 300);
+    },
+    methods: {
+        renderDateTime(): void {
+            $("#date-elem").html(
+                new Date().toLocaleDateString(
+                    'en-US',
+                    {
+                        weekday: 'short',
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric'
+                    } as any
+                )
+            );
+        },
+        renderHighlightedDates(): void {
+            $.post(
+                env.host + "/task.php",
+                {
+                    action: "highlightable_dates",
+                    session: localStorage.getItem("hash") as string
+                },
+                (data: any)=> {
+                    const currentDate: Date = new Date();
+                    const currentDayMarker: JQuery<HTMLElement> = $(".id-" + currentDate.getFullYear() +
+                        "-" + (currentDate.getMonth() + 1 <= 9 ? "0" : "") + (currentDate.getMonth() + 1) +
+                        "-" + (currentDate.getDate() <= 9 ? "0" : "") + currentDate.getDate() +
+                        " .vc-day-content");
+                    currentDayMarker.addClass("vc-day-current");
 
-validateCurrentSession();
-setInterval(validateCurrentSession, 1000);
+                    if(data.status == 1) {
+                        this.dates.splice(0, this.dates.length);
+                        data.dates.forEach((date: any)=>
+                            this.dates.push([toJSDate(parseInt(date[0])), toJSDate(parseInt(date[1]))]));
+                        this.updateHighlightedDates();
+                    }
+                }
+            );
+        },
+        renderTodoList(): void {
+            const taskListContainer: HTMLElement | null = document.getElementById("task-list-container"),
+                schedListContainer: HTMLElement | null = document.getElementById("sched-list-container");
 
-onMounted(()=> {
-    $("#date-elem").html(
-        new Date().toLocaleDateString(
-            'en-US',
-            {
-                weekday: 'short',
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric'
-            } as any
-        )
-    );
+            if(taskListContainer)
+                render(
+                    createVNode(
+                        TaskList,
+                        {apiAction: "todays_unfinished_tasks"}
+                    ),
+                    taskListContainer
+                );
 
-    setInterval(()=> {
-        render(
-            createVNode(
-                TaskList,
-                {apiAction: "todays_unfinished_tasks"}
-            ),
-            document.getElementById("task-list-container") as HTMLElement
-        );
-
-        render(
-            createVNode(
-                TaskList,
-                {apiAction: "todays_unfinished_schedules"}
-            ),
-            document.getElementById("sched-list-container") as HTMLElement
-        );
-    }, 1000);
-});
+            if(schedListContainer)
+                render(
+                    createVNode(
+                        TaskList,
+                        {apiAction: "todays_unfinished_schedules"}
+                    ),
+                    schedListContainer
+                );
+        },
+        updateHighlightedDates(): void {
+            this.calendarAttr.splice(0, this.calendarAttr.length);
+            this.dates.forEach(date=> {
+                this.calendarAttr.push({
+                    highlight: true,
+                    dates: [[date[0], date[1]]]
+                });
+            });
+        }
+    }
+}
 </script>
 
 <template>
@@ -129,7 +152,6 @@ onMounted(()=> {
                 </div>
 
                 <div id="sched-list-container"></div>
-                <!--<TaskList apiAction="todays_unfinished_schedules" />-->
             </div>
 
             <div class="col-lg-6">
@@ -148,7 +170,6 @@ onMounted(()=> {
                 </div>
 
                 <div id="task-list-container"></div>
-                <!--<TaskList apiAction="todays_unfinished_tasks" />-->
             </div>
         </div>
     </div>
