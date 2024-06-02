@@ -10,6 +10,7 @@ jobs:
         working-directory: ./backend
 
     steps:
+      - uses: actions/checkout@v4
       - name: PHP Syntax Checker (Lint)
         uses: StephaneBour/actions-php-lint@8.2
         with:
