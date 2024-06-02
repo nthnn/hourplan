@@ -44,7 +44,7 @@ onMounted(()=> {
 
             <div class="col-6" align="right">
                 <div class="mx-3">
-                    <RouterLink class="text-white text-lato mx-3 menu" id="home-route" to="/home">Home</RouterLink>
+                    <a class="text-white text-lato mx-3 menu" id="home-route" href="/home">Home</a>
                     <RouterLink class="text-white text-lato mx-3 menu" id="todo-list-route" to="/todo-list">To-Do List</RouterLink>
                     <RouterLink class="text-white text-lato mx-3 menu" id="calendar-route" to="/calendar">Calendar</RouterLink>
                     <span class="text-white text-lato mx-3 menu" id="logout-route">Log-out</span>
