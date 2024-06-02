@@ -38,7 +38,9 @@ export default {
                     session: localStorage.getItem("hash") as string,
                     finished: $("#" + this.taskId).is(":checked") ? "1" : "0"
                 },
-                (_: any)=> { }
+                (_: any)=> {
+                    window.location.reload();
+                }
             );
         }
     }

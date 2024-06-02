@@ -112,17 +112,17 @@ export default {
 
 <template>
     <div v-if="!loading">
-    <TaskCard
-        v-for="(task, index) in tasks"
-        :key="index"
-        :large="large"
-        :finished="task[10] === '1'"
-        :id="parseInt(task[0])"
-        :title="base64ToString(task[2])"
-        :desc="base64ToString(task[3])"
-        :color="task[7]"
-        :startDate="parseInt(task[4])"
-        :endDate="parseInt(task[5])"
-        :emotion="emotions[index]" />
+        <TaskCard
+            v-for="(task, index) in tasks"
+            :key="index"
+            :large="large"
+            :finished="task[10] === '1'"
+            :id="parseInt(task[0])"
+            :title="base64ToString(task[2])"
+            :desc="base64ToString(task[3])"
+            :color="task[7]"
+            :startDate="parseInt(task[4])"
+            :endDate="parseInt(task[5])"
+            :emotion="emotions[index]" />
     </div>
 </template>
