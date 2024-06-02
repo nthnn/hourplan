@@ -21,6 +21,7 @@ export default {
         setInterval(this.renderDateTime, 1000);
     },
     mounted() {
+        this.renderDateTime();
         this.renderTaskList();
     },
     methods: {
