@@ -132,7 +132,7 @@ onMounted(()=> {
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-9">
-                            <h3 class="mb-4">Add New Task</h3>
+                            <h3 class="mb-4" style="overflow: hidden">Add New Task</h3>
                         </div>
 
                         <div class="col-3" align="right">
@@ -237,7 +237,7 @@ onMounted(()=> {
                 <div class="modal-body" align="center">
                     <img src="@/assets/images/cat-happy.png" width="120" />
                     <br/>
-                    <h3>Task was successfully created!</h3>
+                    <h3 style="overflow: hidden">Task was successfully created!</h3>
                 </div>
             </div>
         </div>
