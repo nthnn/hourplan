@@ -86,16 +86,15 @@
 
             $result = mysqli_query(
                 $db_conn,
-                "SELECT * FROM task ".
+                ($type != 2 ? "SELECT * FROM task ".
                     "WHERE ((".$startOfDay." BETWEEN start AND end) OR".
                     "   (".$endOfDay." BETWEEN start AND end) OR".
                     "   (start BETWEEN ".$startOfDay." AND ".$endOfDay.") OR".
                     "   (end BETWEEN ".$startOfDay." AND ".$endOfDay."))".
-                    "AND user_id=".$sessionId.
-                    ($type != 2 ?
-                        " AND type=".$type." ".
-                        "AND is_finished=".$isFinished : ""
-                    )
+                    "AND user_id=".$sessionId." ".
+                    "AND type=".$type." ".
+                    "AND is_finished=".$isFinished :
+                    "SELECT * FROM task WHERE user_id=".$sessionId)
             );
 
             if(!$result) {
