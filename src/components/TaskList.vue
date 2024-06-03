@@ -123,6 +123,7 @@ export default {
             :color="task[7]"
             :startDate="parseInt(task[4])"
             :endDate="parseInt(task[5])"
-            :emotion="emotions[index]" />
+            :emotion="emotions[index]"
+            :categories="task[11]" />
     </div>
 </template>
