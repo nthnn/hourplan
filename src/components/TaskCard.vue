@@ -8,7 +8,8 @@ export default {
         return {
             taskId: "task-" + Math.round(Math.random() * 100000),
             startJSDate: toJSDate(this.startDate as number),
-            endJSDate: toJSDate(this.endDate as number)
+            endJSDate: toJSDate(this.endDate as number),
+            categoryArray: atob(this.categories as string).split(",")
         }
     },
     props: {
@@ -20,7 +21,8 @@ export default {
         color: {type: String},
         emotion: {type: String},
         startDate: {type: Number},
-        endDate: {type: Number}
+        endDate: {type: Number},
+        categories: {type: String}
     },
     computed: {
         shortStartDate(): string {
@@ -164,6 +166,7 @@ export default {
                 <div class="col-5 col-lg-6">
                     <div class="py-3">
                         <h3 class="text-lato">{{ title }}</h3>
+                        <p v-for="(category, index) in categoryArray" :key="index" class="badge clr-primary text-lato">{{ category }}</p>
                         <p class="text-lato">{{ desc }}</p>
                     </div>
                 </div>
