@@ -97,7 +97,7 @@ export default {
 
                     const currentUNIXstamp: number = toUNIX(new Date());
                     for(let i = 0; i < this.tasks.length; i++)
-                        if(currentUNIXstamp > parseInt(this.tasks[i][4]))
+                        if(currentUNIXstamp > parseInt(this.tasks[i][4]) && this.tasks[i][10] !== '1')
                             this.emotions[i] = "crying";
                         else this.emotions[i] = (["happy", "delighted"] as Array<string>)
                             [Math.round(Math.random())];
