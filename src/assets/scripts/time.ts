@@ -6,14 +6,7 @@ export function toJSDate(unixDate: number): Date {
     return new Date(unixDate * 1000);
 }
 
-export function toShortDate(date: Date): string {
-    const monthNames: Array<string> = [
-        "January", "February", "March",
-        "April", "May", "June",
-        "July", "August", "September",
-        "October", "November", "December"
-    ];
-
+export function toShortTime(date: Date): string {
     let hours: number = date.getHours(),
         minutes: number = date.getMinutes();
     const period: string = hours >= 12 ? "PM" : "AM";
@@ -25,7 +18,16 @@ export function toShortDate(date: Date): string {
     else if(hours === 0)
         hours = 12;
 
-    return monthNames[date.getMonth()] + " " +
+    return hours + ":" + paddedMinutes + period;
+}
+
+export function toShortDate(date: Date): string {
+    return [
+        "January", "February", "March",
+        "April", "May", "June",
+        "July", "August", "September",
+        "October", "November", "December"
+    ][date.getMonth()] + " " +
         date.getDate() + ", " + date.getFullYear() + " " +
-        hours + ":" + paddedMinutes + period;
+        toShortTime(date);
 }
