@@ -3,10 +3,19 @@ import "../assets/styles/global.css";
 
 import $ from "jquery";
 import env from "../assets/scripts/config";
+
+import GalleryTab from "../components/GalleryTab.vue";
+
 import { useRoute, type RouteLocationNormalizedLoaded } from "vue-router";
+import { ref, type Ref } from "vue";
 
 const route: RouteLocationNormalizedLoaded = useRoute();
 const username: string = "@" + (localStorage.getItem("username") as string);
+
+const showGallery: Ref<boolean> = ref(true),
+    showOverview: Ref<boolean> = ref(false),
+    showFinished: Ref<boolean> = ref(false),
+    showAchievement: Ref<boolean> = ref(false);
 
 setTimeout(()=> {
     $("#" + (route.name as string) + "-route").addClass("selected-menu");
@@ -142,8 +151,10 @@ setTimeout(()=> {
             </div>
         </div>
     </div>
+    <br/>
 
-    <br class="desktop-only"/><br/><br/>
+    <GalleryTab :show="showGallery" />
+    <OverviewTab :show="showOverview" />
 </template>
 
 <style scoped>
