@@ -5,6 +5,9 @@ import $ from "jquery";
 import env from "../assets/scripts/config";
 
 import GalleryTab from "../components/GalleryTab.vue";
+import OverviewTab from "../components/OverviewTab.vue";
+import FinishedTaskTab from "../components/FinishedTaskTab.vue";
+import AchievementsTab from "../components/AchievementsTab.vue";
 
 import { useRoute, type RouteLocationNormalizedLoaded } from "vue-router";
 import { ref, type Ref } from "vue";
@@ -155,6 +158,8 @@ setTimeout(()=> {
 
     <GalleryTab :show="showGallery" />
     <OverviewTab :show="showOverview" />
+    <FinishedTaskTab :show="showFinished" />
+    <AchievementsTab :show="showAchievement" />
 </template>
 
 <style scoped>
