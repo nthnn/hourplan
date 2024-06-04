@@ -85,7 +85,7 @@ export default {
 </script>
 
 <template>
-    <div class="w-100 rounded border-none shadow p-2" :style="{ backgroundColor: color}">
+    <div class="w-100 rounded border-none shadow p-1" :style="{ backgroundColor: color}">
         <div v-if="!large">
             <div class="row">
                 <div class="col-4 col-lg-3">
@@ -164,9 +164,9 @@ export default {
                 </div>
 
                 <div class="col-5 col-lg-6">
-                    <div class="py-3">
+                    <div class="py-1 py-lg-3">
                         <h3 class="text-lato">{{ title }}</h3>
-                        <p v-for="(category, index) in categoryArray" :key="index" class="badge clr-primary text-lato">{{ category }}</p>
+                        <p v-for="(category, index) in categoryArray" :key="index" class="badge clr-primary text-lato me-1">{{ category }}</p>
                         <p class="text-lato">{{ desc }}</p>
                     </div>
                 </div>
