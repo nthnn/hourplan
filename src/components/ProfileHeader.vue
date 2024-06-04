@@ -20,6 +20,34 @@ const showGallery: Ref<boolean> = ref(true),
     showFinished: Ref<boolean> = ref(false),
     showAchievement: Ref<boolean> = ref(false);
 
+function switchGalleryView() {
+    showGallery.value = true;
+    showOverview.value = false;
+    showFinished.value = false;
+    showAchievement.value = false;
+}
+
+function switchOverviewView() {
+    showGallery.value = false;
+    showOverview.value = true;
+    showFinished.value = false;
+    showAchievement.value = false;
+}
+
+function switchFinishedTaskView() {
+    showGallery.value = false;
+    showOverview.value = false;
+    showFinished.value = true;
+    showAchievement.value = false;
+}
+
+function switchAchievementsView() {
+    showGallery.value = false;
+    showOverview.value = false;
+    showFinished.value = false;
+    showAchievement.value = true;
+}
+
 setTimeout(()=> {
     $("#" + (route.name as string) + "-route").addClass("selected-menu");
     $("#mb-" + (route.name as string) + "-route").addClass("menu-selected");
@@ -69,17 +97,17 @@ setTimeout(()=> {
 
             <br/>
             <div class="d-block mt-2 w-100">
-                <button v-if="showGallery" class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block">Gallery</button>
-                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 me-2 d-inline-block">Gallery</button>
+                <button v-if="showGallery" class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block" @click="switchGalleryView">Gallery</button>
+                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 me-2 d-inline-block" @click="switchGalleryView">Gallery</button>
 
-                <button v-if="showOverview" class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block">Task Overview</button>
-                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 me-2 d-inline-block">Task Overview</button>
+                <button v-if="showOverview" class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block" @click="switchOverviewView">Task Overview</button>
+                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 me-2 d-inline-block" @click="switchOverviewView">Task Overview</button>
 
-                <button v-if="showFinished" class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block">Finished Task</button>
-                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 me-2 d-inline-block">Finished Task</button>
+                <button v-if="showFinished" class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block" @click="switchFinishedTaskView">Finished Task</button>
+                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 me-2 d-inline-block" @click="switchFinishedTaskView">Finished Task</button>
 
-                <button v-if="showAchievement" class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block">Achievement</button>
-                <button v-else="showAchievement" class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 me-2 d-inline-block">Achievement</button>
+                <button v-if="showAchievement" class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block" @click="switchAchievementsView">Achievements</button>
+                <button v-else="showAchievement" class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 me-2 d-inline-block" @click="switchAchievementsView">Achievements</button>
             </div>
         </div>
 
@@ -145,23 +173,23 @@ setTimeout(()=> {
 
         <div class="row container g-1 mt-2">
             <div class="col-3">
-                <button v-if="showGallery" class="btn clr-primary text-white text-lato fw-light px-2 w-100">Gallery</button>
-                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 w-100">Gallery</button>
+                <button v-if="showGallery" class="btn clr-primary text-white text-lato fw-light px-2 w-100" @click="switchGalleryView">Gallery</button>
+                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 w-100" @click="switchGalleryView">Gallery</button>
             </div>
 
             <div class="col-3">
-                <button v-if="showOverview" class="btn clr-primary text-white text-lato fw-light px-2 w-100">Overview</button>
-                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 w-100">Overview</button>
+                <button v-if="showOverview" class="btn clr-primary text-white text-lato fw-light px-2 w-100" @click="switchOverviewView">Overview</button>
+                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 w-100" @click="switchOverviewView">Overview</button>
             </div>
 
             <div class="col-3">
-                <button v-if="showFinished" class="btn clr-primary text-white text-lato fw-light px-2 w-100">Task</button>
-                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 w-100">Task</button>
+                <button v-if="showFinished" class="btn clr-primary text-white text-lato fw-light px-2 w-100" @click="switchFinishedTaskView">Task</button>
+                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 w-100" @click="switchFinishedTaskView">Task</button>
             </div>
 
             <div class="col-3">
-                <button v-if="showAchievement" class="btn clr-primary text-white text-lato fw-light px-2 w-100">Achievements</button>
-                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 w-100">Achievements</button>
+                <button v-if="showAchievement" class="btn clr-primary text-white text-lato fw-light px-2 w-100" @click="switchAchievementsView">Achievements</button>
+                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 w-100" @click="switchAchievementsView">Achievements</button>
             </div>
         </div>
     </div>
