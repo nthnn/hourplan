@@ -123,6 +123,24 @@ setTimeout(()=> {
         <div align="center">
             <h1 class="mt-2 text-lato">{{ username }}</h1>
         </div>
+
+        <div class="row container g-1 mt-2">
+            <div class="col-3">
+                <button class="btn clr-primary text-white text-lato fw-light px-2 w-100">Gallery</button>
+            </div>
+
+            <div class="col-3">
+                <button class="btn clr-primary text-white text-lato fw-light px-2 w-100">Overview</button>
+            </div>
+
+            <div class="col-3">
+                <button class="btn clr-primary text-white text-lato fw-light px-2 w-100">Task</button>
+            </div>
+
+            <div class="col-3">
+                <button class="btn clr-primary text-white text-lato fw-light px-2 w-100">Achievement</button>
+            </div>
+        </div>
     </div>
 
     <br class="desktop-only"/><br/><br/>
