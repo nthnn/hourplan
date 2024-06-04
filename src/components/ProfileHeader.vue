@@ -69,10 +69,17 @@ setTimeout(()=> {
 
             <br/>
             <div class="d-block mt-2 w-100">
-                <button class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block">Gallery</button>
-                <button class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block">Task Overview</button>
-                <button class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block">Finished Task</button>
-                <button class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block">Achievement</button>
+                <button v-if="showGallery" class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block">Gallery</button>
+                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 me-2 d-inline-block">Gallery</button>
+
+                <button v-if="showOverview" class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block">Task Overview</button>
+                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 me-2 d-inline-block">Task Overview</button>
+
+                <button v-if="showFinished" class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block">Finished Task</button>
+                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 me-2 d-inline-block">Finished Task</button>
+
+                <button v-if="showAchievement" class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block">Achievement</button>
+                <button v-else="showAchievement" class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 me-2 d-inline-block">Achievement</button>
             </div>
         </div>
 
@@ -138,19 +145,23 @@ setTimeout(()=> {
 
         <div class="row container g-1 mt-2">
             <div class="col-3">
-                <button class="btn clr-primary text-white text-lato fw-light px-2 w-100">Gallery</button>
+                <button v-if="showGallery" class="btn clr-primary text-white text-lato fw-light px-2 w-100">Gallery</button>
+                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 w-100">Gallery</button>
             </div>
 
             <div class="col-3">
-                <button class="btn clr-primary text-white text-lato fw-light px-2 w-100">Overview</button>
+                <button v-if="showOverview" class="btn clr-primary text-white text-lato fw-light px-2 w-100">Overview</button>
+                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 w-100">Overview</button>
             </div>
 
             <div class="col-3">
-                <button class="btn clr-primary text-white text-lato fw-light px-2 w-100">Task</button>
+                <button v-if="showFinished" class="btn clr-primary text-white text-lato fw-light px-2 w-100">Task</button>
+                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 w-100">Task</button>
             </div>
 
             <div class="col-3">
-                <button class="btn clr-primary text-white text-lato fw-light px-2 w-100">Achievement</button>
+                <button v-if="showAchievement" class="btn clr-primary text-white text-lato fw-light px-2 w-100">Achievements</button>
+                <button v-else class="btn outlined-secondary brdr-secondary text-dark text-lato px-2 w-100">Achievements</button>
             </div>
         </div>
     </div>
