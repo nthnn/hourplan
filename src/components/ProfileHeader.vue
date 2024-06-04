@@ -54,6 +54,14 @@ setTimeout(()=> {
         <div class="col-6">
             <br/><br/>
             <h1 class="mt-2 text-lato text-white">{{ username }}</h1>
+
+            <br/>
+            <div class="d-block mt-2 w-100">
+                <button class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block">Gallery</button>
+                <button class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block">Task Overview</button>
+                <button class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block">Finished Task</button>
+                <button class="btn clr-primary text-white text-lato fw-light px-2 me-2 d-inline-block">Achievement</button>
+            </div>
         </div>
 
         <div class="col-3" align="right">
