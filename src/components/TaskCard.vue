@@ -166,7 +166,7 @@ export default {
                 <div class="col-5 col-lg-6">
                     <div class="py-1 py-lg-3">
                         <h3 class="text-lato">{{ title }}</h3>
-                        <p v-for="(category, index) in categoryArray" :key="index" class="badge clr-primary text-lato me-1">{{ category }}</p>
+                        <p v-for="(category, index) in categoryArray" :key="index" class="badge clr-primary text-lato m-0 me-1">{{ category }}</p>
                         <p class="text-lato">{{ desc }}</p>
                     </div>
                 </div>
