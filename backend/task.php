@@ -21,7 +21,7 @@
                 return;
             }
 
-            if($repeat < 0 || $repeat > 4) {
+            if($repeat < 0 || $repeat > 3) {
                 respondError("Invalid repeat type value.");
                 return;
             }
@@ -38,6 +38,16 @@
 
             if(!validateHexColor($color)) {
                 respondError("Invalid color hexadecimal string value.");
+                return;
+            }
+
+            if($start_dt > $end_dt) {
+                respondError("Start date cannot be greater than end date.");
+                return;
+            }
+
+            if($start_dt == $end_dt) {
+                respondError("Start date cannot be the same with end date.");
                 return;
             }
 
