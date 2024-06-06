@@ -55,6 +55,18 @@ html.overflow-hidden, body.overflow-hidden {
     background-color: #ebb797 !important;
 }
 
+.clr-enabled {
+    background-color: #e9ffef !important;
+}
+
+.border-none {
+    border: 0 !important;
+}
+
+.brdr-enabled {
+    border-color: #e9ffef !important;
+}
+
 .brdr-secondary {
     border-color: #f7ae81 !important;
 }
