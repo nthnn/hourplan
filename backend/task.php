@@ -5,6 +5,7 @@
     include_once("lib/guidv4.php");
     include_once("lib/response.php");
     include_once("lib/session.php");
+    include_once("lib/time.php");
     include_once("lib/validator.php");
 
     class Task {
@@ -71,6 +72,14 @@
             respondOk();
         }
 
+        private static function uncheckFinishedStatus($id) {
+            global $db_conn;
+            mysqli_query(
+                $db_conn,
+                "UPDATE task SET `is_finished`=0 WHERE id=".$id
+            );
+        }
+
         public static function fetchTodaysTasks($session, $type, $isFinished) {
             global $db_conn;
 
@@ -86,15 +95,10 @@
 
             $result = mysqli_query(
                 $db_conn,
-                ($type != 2 ? "SELECT * FROM task ".
-                    "WHERE ((".$startOfDay." BETWEEN start AND end) OR".
-                    "   (".$endOfDay." BETWEEN start AND end) OR".
-                    "   (start BETWEEN ".$startOfDay." AND ".$endOfDay.") OR".
-                    "   (end BETWEEN ".$startOfDay." AND ".$endOfDay."))".
-                    "AND user_id=".$sessionId." ".
-                    "AND type=".$type." ".
-                    "AND is_finished=".$isFinished :
-                    "SELECT * FROM task WHERE user_id=".$sessionId)
+                ($type != 2 ? "SELECT `id`, `user_id`, `title`, `desc`, `start`, `end`, `repeat`, `color`, `ends`, `type`, `is_finished`, `categories` FROM task ".
+                    "WHERE user_id=".$sessionId." ".
+                    "AND type=".$type :
+                    "SELECT `id`, `user_id`, `title`, `desc`, `start`, `end`, `repeat`, `color`, `ends`, `type`, `is_finished`, `categories` FROM task WHERE user_id=".$sessionId)
             );
 
             if(!$result) {
@@ -102,10 +106,36 @@
                 return;
             }
 
+            $currentDate = date('Y-m-d');
+            $startOfDay = strtotime($currentDate.' - 3 days');
+            $endOfDay = strtotime($currentDate.' + 3 days');
+
+            $rows = mysqli_fetch_all($result);
+            $tasks = array();
+
+            for($i = 0; $i < count($rows); $i++) {
+                $row = $rows[$i];
+
+                if($row[6] == 0 && $row[10] == false && (
+                    ($row[4] >= $startOfDay && $row[5] <= $startOfDay) ||
+                    ($row[4] >= $endOfDay && $row[5] <= $endOfDay) ||
+                    ($startOfDay >= $row[4] && $endOfDay <= $row[4]) ||
+                    ($startOfDay >= $row[5] && $endOfDay <= $row[5])))
+                    array_push($tasks, $row);
+                else if($row[6] == 1) {
+                    $row[4] = getTimeForTodayBasedOn($row[4]);
+                    $row[5] = getTimeForTodayBasedOn($row[5]);
+                    $row[10] = 0;
+
+                    Task::uncheckFinishedStatus($row[0]);
+                    array_push($tasks, $row);
+                }
+            }
+
             jsonResponse(
                 json_encode(array(
                     "status"=> 1,
-                    "tasks"=> mysqli_fetch_all($result)
+                    "tasks"=> $tasks
                 ))
             );
         }
