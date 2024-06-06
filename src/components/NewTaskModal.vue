@@ -178,7 +178,6 @@ onMounted(()=> {
                     <select id="task-repeat" name="task-repeat" class="form-control text-lato" required>
                         <option class="text-lato" value="0">Does not repeat</option>
                         <option class="text-lato" value="1">Every Day</option>
-                        <option class="text-lato" value="2">Every Week</option>
                         <option class="text-lato" value="3">Every Month</option>
                         <option class="text-lato" value="4">Every Year</option>
                     </select>
