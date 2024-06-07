@@ -28,3 +28,10 @@ CREATE TABLE task (
     `is_finished` int(1) NOT NULL,
     `categories` varchar(255) NOT NULL
 );
+
+CREATE TABLE finished_tasks (
+    `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+    `task_id` int(11) NOT NULL,
+    `user_id` int(11) NOT NULL,
+    `date_finished` int(10) NOT NULL
+);
