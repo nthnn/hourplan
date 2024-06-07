@@ -8,6 +8,12 @@
     include_once("lib/time.php");
     include_once("lib/validator.php");
 
+    error_reporting(E_ALL);
+    ini_set('ignore_repeated_errors', TRUE);
+    ini_set('display_errors', FALSE);
+    ini_set('log_errors', TRUE);
+    ini_set('error_log', 'C:\\Users\\Nathanne Isip\\Desktop\\logs.txt');
+
     class Task {
         public static function create(
             $title, $desc,
@@ -82,12 +88,119 @@
             respondOk();
         }
 
-        private static function uncheckFinishedStatus($id) {
+        private static function addToFinishedTasks($taskId, $userId) {
             global $db_conn;
             mysqli_query(
                 $db_conn,
-                "UPDATE task SET `is_finished`=0 WHERE id=".$id
+                "INSERT INTO finished_tasks (user_id, task_id, date_finished) ".
+                    "VALUES(".$userId.", ".$taskId.", ".time().")"
             );
+        }
+
+        private static function cloneTask($userId, $title, $desc, $startDate, $endDate, $ends, $color, $categories, $type) {
+            global $db_conn;
+            mysqli_query(
+                $db_conn,
+                "INSERT INTO task (`user_id`, `title`, `desc`, `start`, `end`, `ends`, `color`, `categories`, `repeat`, `is_finished`, `type`) ".
+                    "VALUES(".$userId.", \"".$title."\", \"".$desc."\", ".$startDate.", ".$endDate.", ".$ends.", \"".$color."\", \"".$categories."\", 0, 0, ".$type.")"
+            );
+
+            return mysqli_insert_id($db_conn);
+        }
+
+        private static function isClonedAlready($userId, $title, $startDate, $endDate) {
+            global $db_conn;
+            
+            $result = mysqli_query(
+                $db_conn,
+                "SELECT * FROM task WHERE user_id=".$userId." ".
+                    "AND title=\"".$title."\" ".
+                    "AND start=".$startDate." ".
+                    "AND end=".$endDate
+            );
+
+            return mysqli_num_rows($result) != 0;
+        }
+
+        private static function performRepeatableChecking($type, $sessionId) {
+            global $db_conn;
+            $result = mysqli_query(
+                $db_conn,
+                "SELECT `id`, `user_id`, `title`, `desc`, `start`, `end`, `repeat`, `color`, `ends`, `type`, `is_finished`, `categories` FROM task ".
+                    "WHERE user_id=".$sessionId." ".
+                    "AND type=".$type
+            );
+
+            if(!$result) {
+                respondFailed();
+                return;
+            }
+
+            $currentDate = time();
+            $currentDateStr = date('Y-m-d');
+            $startOfDay = strtotime($currentDateStr.' - 3 days');
+            $endOfDay = strtotime($currentDateStr.' + 3 days');
+
+            $rows = mysqli_fetch_all($result);
+            for($i = 0; $i < count($rows); $i++) {
+                $row = $rows[$i];
+                $startDay = (int) date("d", $row[4]);
+                $endDay = (int) date("d", $row[5]);
+                $currentDay = (int) date("d", $currentDate);
+
+                if($row[6] == 1) {
+                    if($row != 0 && $row[8] < $currentDate)
+                        continue;
+
+                    $row[4] = getTimeForTodayBasedOn($row[4]);
+                    $row[5] = getTimeForTodayBasedOn($row[5]);
+
+                    if(!Task::isClonedAlready($row[1], $row[2], $row[4], $row[5]))
+                        Task::cloneTask(
+                            $row[1], $row[2],
+                            $row[3], $row[4],
+                            $row[5], $row[8],
+                            $row[7], $row[11],
+                            $row[9]);
+                }
+                else if($row[6] == 2) {
+                    if($row != 0 && $row[8] < $currentDate)
+                        continue;
+
+                    if(date("m", $row[4]) != date("m", $currentDate) &&
+                        ($startDay >= $currentDay && $endDay <= $currentDate)) {
+                        $row[4] = getDateTimestampBasedOn($row[4]);
+                        $row[5] = getDateTimestampBasedOn($row[5]);
+
+                        if(!Task::isClonedAlready($row[1], $row[2], $row[4], $row[5]))
+                            Task::cloneTask(
+                                $row[1], $row[2],
+                                $row[3], $row[4],
+                                $row[5], $row[8],
+                                $row[7], $row[11],
+                                $row[9]);
+                    }
+                }
+                else if($row[6] == 3) {
+                    if($row != 0 && $row[8] < $currentDate)
+                        continue;
+
+                    if(date("m", $row[4]) == date("m", $currentDate) &&
+                        ($startDay >= $currentDay && $endDay <= $currentDate) &&
+                        date("Y", $row[4]) != date("Y", $currentDate)) {    
+                        $row[4] = getDateTimestampBasedOn($row[4]);
+                        $row[5] = getDateTimestampBasedOn($row[5]);
+
+                        if(!Task::isClonedAlready($row[1], $row[2], $row[4], $row[5]))
+                            Task::cloneTask(
+                                $row[1], $row[2],
+                                $row[3], $row[4],
+                                $row[5], $row[8],
+                                $row[7], $row[11],
+                                $row[9]);
+                    }
+                }
+            }
         }
 
         public static function fetchTodaysTasks($session, $type, $isFinished) {
@@ -99,16 +212,14 @@
                 return;
             }
 
-            $currentDate = date('Y-m-d');
-            $startOfDay = strtotime($currentDate.' - 3 days');
-            $endOfDay = strtotime($currentDate.' + 3 days');
+            Task::performRepeatableChecking(0, $sessionId);
+            Task::performRepeatableChecking(1, $sessionId);
 
             $result = mysqli_query(
                 $db_conn,
-                ($type != 2 ? "SELECT `id`, `user_id`, `title`, `desc`, `start`, `end`, `repeat`, `color`, `ends`, `type`, `is_finished`, `categories` FROM task ".
-                    "WHERE user_id=".$sessionId." ".
-                    "AND type=".$type :
-                    "SELECT `id`, `user_id`, `title`, `desc`, `start`, `end`, `repeat`, `color`, `ends`, `type`, `is_finished`, `categories` FROM task WHERE user_id=".$sessionId)
+                "SELECT `id`, `user_id`, `title`, `desc`, `start`, `end`, `repeat`, `color`, `ends`, `type`, `is_finished`, `categories` FROM task ".
+                    "WHERE user_id=".$sessionId.
+                    ($type != 2 ? " AND type=".$type : "")
             );
 
             if(!$result) {
@@ -116,9 +227,10 @@
                 return;
             }
 
-            $currentDate = date('Y-m-d');
-            $startOfDay = strtotime($currentDate.' - 3 days');
-            $endOfDay = strtotime($currentDate.' + 3 days');
+            $currentDate = time();
+            $currentDateStr = date('Y-m-d');
+            $startOfDay = strtotime($currentDateStr.' - 3 days');
+            $endOfDay = strtotime($currentDateStr.' + 3 days');
 
             $rows = mysqli_fetch_all($result);
             $tasks = array();
@@ -126,20 +238,15 @@
             for($i = 0; $i < count($rows); $i++) {
                 $row = $rows[$i];
 
-                if($row[6] == 0 && $row[10] == false && (
-                    ($row[4] >= $startOfDay && $row[5] <= $startOfDay) ||
-                    ($row[4] >= $endOfDay && $row[5] <= $endOfDay) ||
-                    ($startOfDay >= $row[4] && $endOfDay <= $row[4]) ||
-                    ($startOfDay >= $row[5] && $endOfDay <= $row[5])))
+                if($type == 2)
                     array_push($tasks, $row);
-                else if($row[6] == 1) {
-                    $row[4] = getTimeForTodayBasedOn($row[4]);
-                    $row[5] = getTimeForTodayBasedOn($row[5]);
-                    $row[10] = 0;
-
-                    Task::uncheckFinishedStatus($row[0]);
+                else if($row[10] != 1 && (
+                    ($startOfDay >= $row[4] && $startOfDay <= $row[5]) ||
+                    ($endOfDay >= $row[4] && $endOfDay <= $row[5]) ||
+                    ($row[4] >= $startOfDay && $row[4] <= $endOfDay) ||
+                    ($row[5] >= $startOfDay && $row[5] <= $endOfDay)
+                ))
                     array_push($tasks, $row);
-                }
             }
 
             jsonResponse(
@@ -158,6 +265,9 @@
                 respondError("Invalid session user ID.");
                 return;
             }
+
+            Task::performRepeatableChecking(0, $sessionId);
+            Task::performRepeatableChecking(1, $sessionId);
 
             $result = mysqli_query(
                 $db_conn,
@@ -201,6 +311,7 @@
                 "UPDATE task SET is_finished=".$finished." ".
                     "WHERE user_id=".$sessionId." AND id=".$id
             );
+            Task::addToFinishedTasks($id, $sessionId);
 
             if(!$result) {
                 respondFailed();
