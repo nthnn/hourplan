@@ -74,7 +74,7 @@ setTimeout(()=> {
 <template>
     <div class="clr-primary hp-navbar p-3 desktop-only">
         <div class="clr-primary hp-navbar p-3 d-fixed fixed-top" align="right">
-            <RouterLink class="text-white text-lato mx-3 menu" id="home-route" to="/home">Home</RouterLink>
+            <a class="text-white text-lato mx-3 menu text-decoration-none" id="home-route" href="./home">Home</a>
             <RouterLink class="text-white text-lato mx-3 menu" id="todo-list-route" to="/todo-list">To-Do List</RouterLink>
             <RouterLink class="text-white text-lato mx-3 menu" id="calendar-route" to="/calendar">Calendar</RouterLink>
             <span class="text-white text-lato mx-3 menu" id="logout-route">Log-out</span>
@@ -126,9 +126,9 @@ setTimeout(()=> {
             </div>
 
             <div class="col-2">
-                <RouterLink to="/home">
+                <a href="./home" class="text-decoration-none">
                     <img src="@/assets/images/ic-home.png" id="mb-home-route" width="36" />
-                </RouterLink>
+                </a>
             </div>
 
             <div class="col-2">
