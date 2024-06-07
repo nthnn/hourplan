@@ -9,7 +9,7 @@ function getSessionUserId($hash) {
         "SELECT user_id FROM session WHERE hash=\"".$hash."\""
     );
 
-    if($res) {
+    if($res && mysqli_num_rows($res) != 0) {
         $row = mysqli_fetch_row($res);
         return $row[0];
     }
