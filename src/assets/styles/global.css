@@ -141,10 +141,6 @@ html.overflow-hidden, body.overflow-hidden {
     border-width: 2px !important;
 }
 
-.vc-week:last-child {
-    display: none;
-}
-
 .vc-time-select-hours,
 .vc-time-select-minutes,
 .vc-base-select select {
