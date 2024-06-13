@@ -5,11 +5,39 @@ import NewTaskModal from "../components/NewTaskModal.vue";
 
 <script lang="ts">
 import $ from "jquery";
+import { ref, type Ref } from "vue";
+import { VCalendar as VCalendarVuetify } from "vuetify/labs/VCalendar";
+
 import {
     validateCurrentSession
 } from "@/assets/scripts/session";
 
+const calendarData: Ref<any> = ref({
+    today: [new Date()],
+    events: [
+        {
+            title: 'Weekly Meeting',
+            start: new Date('2024-06-03 09:00'),
+            end: new Date('2024-06-07 10:00'),
+        },
+        {
+            title: `Thomas' Birthday`,
+            start: new Date('2024-06-10'),
+            end: new Date('2024-06-10'),
+            allDay: true,
+        },
+        {
+            title: 'Mash Potatoes',
+            start: new Date('2019-01-09 12:30'),
+            end: new Date('2019-01-09 15:30'),
+        },
+    ]
+});
+
 export default {
+    data() {
+        return calendarData.value;
+    },
     created() {
         validateCurrentSession();
         setInterval(validateCurrentSession, 1000);
@@ -49,19 +77,22 @@ export default {
             <div class="col-5">
                 <div class="w-100" align="right">
                     <button
-                        class="w-auto btn outlined-secondary brdr-secondary text-dark text-lato w-100 py-2"
+                        class="w-auto btn outlined-secondary brdr-secondary text-dark text-lato w-100 w-lg-50 py-2"
                         data-bs-toggle="modal" data-bs-target="#newTaskModal">Add New Task</button>
                 </div>
             </div>
         </div>
-        <br/><br class="desktop-only" />
+        <br class="desktop-only" />
 
-        <div class="d-block" align="center">
-            <br/><br/>
-            <img src="@/assets/images/cat-loading.gif" width="200" />
+        <div class="container">
+            <VCalendarVuetify
+                ref="calendar"
+                v-model="today"
+                :events="events"
+                type="week">
+            </VCalendarVuetify>
         </div>
-
-        <br/><br/>
+        <br/>
     </div>
 
     <br/><br/>
