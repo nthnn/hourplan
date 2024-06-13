@@ -87,7 +87,7 @@ onMounted(()=> {
         </div>
     </div>
 
-    <br class="desktop-only"/><br/><br/>
+    <br class="desktop-only"/><br/><br/><br/>
 </template>
 
 <style scoped>
