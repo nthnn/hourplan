@@ -7,20 +7,13 @@ import env from "@/assets/scripts/config";
 import { onMounted, ref, type Ref } from "vue";
 import { toUNIX } from "@/assets/scripts/time";
 
-const startDate: Ref<Date> = ref(new Date()),
-    endDate: Ref<Date> = ref(new Date()),
-    endRepeatDate: Ref<Date> = ref(new Date());
-
-endDate.value.setDate(endDate.value.getDate() + 1);
-endRepeatDate.value.setDate(endRepeatDate.value.getDate() + 1);
-
 function createNewTask() {
     const title: string = $("#task-title").val() as string;
     const desc: string = $("#task-desc").val() as string;
     const categories: string = $("#task-categories").val() as string;
 
-    const startDt: number = toUNIX(startDate.value);
-    const endDt: number = toUNIX(endDate.value);
+    const startDt: number = toUNIX(new Date($("#task-start-date").val() as string));
+    const endDt: number = toUNIX(new Date($("#task-end-date").val() as string));
 
     const repeat: number = $("#task-repeat option:selected").val() as number;
     const type: number = $("input[name=task-type]:checked").val() as number;
@@ -28,7 +21,7 @@ function createNewTask() {
     let ends: any = $("input[name=task-end]:checked").val();
     if(ends == "never")
         ends = 0;
-    else ends = toUNIX(endRepeatDate.value);
+    else ends = toUNIX(new Date($("#task-end-repeat-date").val() as string));
 
     const showError = (message: string): void => {
         $("#create-error").html(message);
@@ -107,20 +100,13 @@ onMounted(()=> {
         $("#task-title").val("");
         $("#task-desc").val("");
         $("#task-categories").val("");
+        $("#task-start-date").val("");
+        $("#task-end-date").val("");
         $("#task-color").val("#a9b7fa");
 
         $("#task-repeat option:selected").prop("selected", false);
         $("input[name=task-type]:checked").prop("checked", false);
         $("input[name=task-end]:checked").prop("checked", false);
-    });
-
-    newTaskModal.addEventListener("show.bs.modal", ()=> {
-        startDate.value = new Date();
-        endDate.value = new Date();
-        endRepeatDate.value = new Date();
-
-        endDate.value.setDate(endDate.value.getDate() + 1);
-        endRepeatDate.value.setDate(endRepeatDate.value.getDate() + 1);
     });
 });
 </script>
@@ -156,21 +142,13 @@ onMounted(()=> {
 
                     <div class="row">
                         <div class="col-lg-6">
-                            <label for="task-start-time" class="form-label text-lato mt-2">Start Time</label>
-                            <VDatePicker v-model="startDate" mode="dateTime" :input-debounce="500">
-                                <template #default="{ inputValue, inputEvents }">
-                                    <input class="form-control text-lato" id="task-start-time" :value="inputValue" v-on="inputEvents" />
-                                </template>
-                            </VDatePicker>
+                            <label for="task-start-time" class="form-label text-lato mt-2">Start Datetime</label>
+                            <input type="datetime-local" class="form-control text-lato" id="task-start-date" />
                         </div>
 
                         <div class="col-lg-6">
-                            <label for="task-end-time" class="form-label text-lato mt-2">End Time</label>
-                            <VDatePicker v-model="endDate" mode="dateTime" :input-debounce="500">
-                                <template #default="{ inputValue, inputEvents }">
-                                    <input class="form-control text-lato" id="task-end-time" :value="inputValue" v-on="inputEvents" />
-                                </template>
-                            </VDatePicker>
+                            <label for="task-end-time" class="form-label text-lato mt-2">End Datetime</label>
+                            <input type="datetime-local" class="form-control text-lato" id="task-end-date" />
                         </div>
                     </div>
 
@@ -195,11 +173,7 @@ onMounted(()=> {
                         </div>
 
                         <div class="form-check d-inline-block">
-                            <VDatePicker v-model="endRepeatDate" mode="dateTime" :input-debounce="500">
-                                <template #default="{ inputValue, inputEvents }">
-                                    <input class="form-control text-lato d-inline-block mb-2" id="task-end-repeat-date" :value="inputValue" v-on="inputEvents" />
-                                </template>
-                            </VDatePicker>
+                            <input type="datetime-local" class="form-control text-lato d-inline-block mb-2" id="task-end-repeat-date" />
                         </div>
                     </div>
 
