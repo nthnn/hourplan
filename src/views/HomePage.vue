@@ -129,49 +129,48 @@ export default {
         </div>
         <br/>
 
-        <div class="px-2 px-lg-4">
-            <VDatePicker
-                class="w-100 border-dark date-picker"
-                :attributes="calendarAttr" />
-        </div>
-        <br/><br class="desktop-only" />
-
-        <div class="row px-2 px-lg-4">
-            <div class="col-lg-6">
-                <h4 class="pb-2">Class Schedule</h4>
-
-                <div id="class-sched-loading" align="center">
-                    <br/>
-                    <img src="@/assets/images/cat-loading.gif" width="150" />
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <VDatePicker
+                        class="w-100 border-dark date-picker"
+                        :attributes="calendarAttr" />
                 </div>
 
-                <div id="sched-no-list" class="d-none" align="center">
-                    <br/>
-                    <img src="@/assets/images/cat-delighted.png" width="150" />
-                    <p>No schedules in range!</p>
+                <div class="col-6">
+                    <h4 class="pb-2">Class Schedule</h4>
+
+                    <div id="class-sched-loading" align="center">
+                        <br/>
+                        <img src="@/assets/images/cat-loading.gif" width="150" />
+                    </div>
+
+                    <div id="sched-no-list" class="d-none" align="center">
+                        <br/>
+                        <img src="@/assets/images/cat-delighted.png" width="150" />
+                        <p>No schedules in range!</p>
+                    </div>
+
+                    <div id="sched-list-container"></div>
+                    <br/><br class="mobile-only" />
+
+                    <h4 class="pb-2">Due Soon</h4>
+                    <div id="class-task-loading" align="center">
+                        <br/>
+                        <img src="@/assets/images/cat-loading.gif" width="120" />
+                    </div>
+
+                    <div id="todo-no-list" class="d-none" align="center">
+                        <br/>
+                        <img src="@/assets/images/cat-delighted.png" width="120" />
+                        <p>No task in range!</p>
+                    </div>
+
+                    <div id="task-list-container"></div>
                 </div>
-
-                <div id="sched-list-container"></div>
-            </div>
-
-            <div class="col-lg-6">
-                <br class="mobile-only" />
-                <h4 class="pb-2">Due Soon</h4>
-
-                <div id="class-task-loading" align="center">
-                    <br/>
-                    <img src="@/assets/images/cat-loading.gif" width="150" />
-                </div>
-
-                <div id="todo-no-list" class="d-none" align="center">
-                    <br/>
-                    <img src="@/assets/images/cat-delighted.png" width="150" />
-                    <p>No task in range!</p>
-                </div>
-
-                <div id="task-list-container"></div>
             </div>
         </div>
+        <br/>
     </div>
 
     <br/><br/>
