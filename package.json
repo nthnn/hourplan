@@ -14,6 +14,7 @@
     "misc-copy": "copy .htaccess dist\\ && copy backend\\ dist\\ && mkdir dist\\lib && copy backend\\lib\\ dist\\lib\\"
   },
   "dependencies": {
+    "@mdi/font": "^7.4.47",
     "@popperjs/core": "^2.11.8",
     "animate.css": "^4.1.1",
     "bootstrap": "^5.3.3",
