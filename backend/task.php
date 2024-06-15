@@ -315,6 +315,40 @@
             respondOk();
             return;
         }
+
+        public static function calendarData($session) {
+            global $db_conn;
+
+            $sessionId = getSessionUserId($session);
+            if($sessionId < 0) {
+                respondError("Invalid session user ID.");
+                return;
+            }
+
+            $result = mysqli_query(
+                $db_conn,
+                "SELECT `title`, `start`, `end` FROM task WHERE user_id=".$sessionId
+            );
+
+            if(!$result) {
+                respondFailed();
+                return;
+            }
+
+            $respCont = array();
+            foreach(mysqli_fetch_all($result) as $row)
+                array_push(
+                    $respCont,
+                    array(
+                        "title"=> $row[0],
+                        "start"=> $row[1],
+                        "end"=> $row[2]
+                    )
+                );
+
+            jsonResponse(json_encode($respCont));
+            return;
+        }
     }
 
     if($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -386,6 +420,13 @@
             $session = $_POST["session"];
 
             Task::highlightableDates($session);
+            return;
+        }
+        else if($action == "calendar_data" &&
+            isset($_POST["session"]) && !empty($_POST["session"])) {
+            $session = $_POST["session"];
+
+            Task::calendarData($session);
             return;
         }
         else if($action == "mark_task" &&
