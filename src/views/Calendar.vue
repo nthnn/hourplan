@@ -99,6 +99,8 @@ export default {
         <br class="desktop-only" />
 
         <div class="container">
+            <hr/>
+
             <VCalendarVuetify
                 ref="calendar"
                 v-model="today"
@@ -109,6 +111,6 @@ export default {
         <br/>
     </div>
 
-    <br/><br/>
+    <br/>
     <NewTaskModal />
 </template>
