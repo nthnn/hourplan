@@ -2,9 +2,43 @@
 import $ from "jquery";
 import { detectMobile } from '@/assets/scripts/mobile_detect';
 
+const showMessage = (id: string, message: string)=> {
+    $("#" + id).removeClass("d-none");
+    $("#" + id).addClass("d-block");
+    $("#" + id).html(message);
+}, hideMessage = (id: string)=> {
+    $("#" + id).removeClass("d-block");
+    $("#" + id).addClass("d-none");
+    $("#" + id).html("");
+};
+
 function saveChanges() {
     let username: string = $("#settings-username").val() as string,
         email: string = $("#settings-email").val() as string;
+
+    hideMessage("change-info-error");
+    hideMessage("change-info-success");
+
+    $.post(
+        env.host + "/account.php",
+        {
+            action: "change_info",
+            hash: localStorage.getItem("hash") as string,
+            username: username,
+            email: email
+        },
+        (data)=> {
+            if(data.status == 1) {
+                showMessage("change-info-success", "Changes saved!");
+                localStorage.setItem("username", username);
+
+                setTimeout(()=> window.location.reload(), 2000);
+                return;
+            }
+
+            showMessage("change-info-error", data.error);
+        }
+    );
 }
 
 function changePassword() {
@@ -56,8 +90,15 @@ export default {
             </div>
         </div>
 
-        <div align="right">
-            <button type="button" class="btn outlined-secondary text-lato mt-2" @click="saveChanges">Save Changes</button>
+        <div class="row">
+            <div class="col-6">
+                <p class="d-none text-danger text-lato" id="change-info-error"></p>
+                <p class="d-none text-info text-lato" id="change-info-success"></p>
+            </div>
+
+            <div class="col-6" align="right">
+                <button type="button" class="btn outlined-secondary text-lato mt-2" @click="saveChanges">Save Changes</button>
+            </div>
         </div>
         <hr/>
 
