@@ -7,6 +7,9 @@ import env from "@/assets/scripts/config";
 import { onMounted, ref, type Ref } from "vue";
 import { toUNIX } from "@/assets/scripts/time";
 
+const happyCat: string = "./images/cat-happy-" +
+    (localStorage.getItem("theme") as string) + ".png";
+
 function createNewTask() {
     const title: string = $("#task-title").val() as string;
     const desc: string = $("#task-desc").val() as string;
@@ -208,7 +211,7 @@ onMounted(()=> {
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content shadow">
                 <div class="modal-body" align="center">
-                    <img src="@/assets/images/cat-happy.png" width="120" />
+                    <img :src="happyCat" width="120" />
                     <br/>
                     <h3 style="overflow: hidden">Task was successfully created!</h3>
                 </div>
