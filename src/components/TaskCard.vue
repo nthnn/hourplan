@@ -6,6 +6,9 @@ import { toJSDate, toShortDate, toShortTime } from '@/assets/scripts/time';
 export default {
     data() {
         return {
+            happyCat: "./images/cat-happy-" + (localStorage.getItem("theme") as string) + ".png",
+            delightedCat: "./images/cat-delighted-" + (localStorage.getItem("theme") as string) + ".png",
+            cryingCat: "./images/cat-crying-" + (localStorage.getItem("theme") as string) + ".png",
             taskId: "task-" + Math.round(Math.random() * 100000),
             startJSDate: toJSDate(this.startDate as number),
             endJSDate: toJSDate(this.endDate as number),
@@ -90,13 +93,13 @@ export default {
             <div class="row">
                 <div class="col-4 col-lg-3">
                     <div v-if="emotion === 'happy'">
-                        <img src="@/assets/images/cat-happy.png" class="w-100 p-2" />
+                        <img :src="happyCat" class="w-100 p-2" />
                     </div>
                     <div v-else-if="emotion === 'delighted'">
-                        <img src="@/assets/images/cat-delighted.png" class="w-100 p-2" />
+                        <img :src="delightedCat" class="w-100 p-2" />
                     </div>
                     <div v-else-if="emotion === 'crying'">
-                        <img src="@/assets/images/cat-crying.png" class="w-100 p-2" />
+                        <img :src="cryingCat" class="w-100 p-2" />
                     </div>
                 </div>
 
@@ -153,13 +156,13 @@ export default {
 
                 <div class="col-4 col-lg-2">
                     <div v-if="emotion === 'happy'">
-                        <img src="@/assets/images/cat-happy.png" class="w-100" />
+                        <img :src="happyCat" class="w-100" />
                     </div>
                     <div v-else-if="emotion === 'delighted'">
-                        <img src="@/assets/images/cat-delighted.png" class="w-100" />
+                        <img :src="delightedCat" class="w-100" />
                     </div>
                     <div v-else-if="emotion === 'crying'">
-                        <img src="@/assets/images/cat-crying.png" class="w-100" />
+                        <img :src="cryingCat" class="w-100" />
                     </div>
                 </div>
 
