@@ -4,6 +4,7 @@
     include_once("lib/db_config.php");
     include_once("lib/guidv4.php");
     include_once("lib/response.php");
+    include_once("lib/session.php");
     include_once("lib/validator.php");
 
     class Account {
@@ -159,6 +160,29 @@
 
             respondError("Something went wrong.");
         }
+
+        public static function fetchEmail($hash) {
+            if(!validateUuid($hash)) {
+                respondFailed();
+                return;
+            }
+
+            global $db_conn;
+            $sessionId = getSessionUserId($hash);
+
+            if($sessionId < 0) {
+                respondError("Invalid session user ID.");
+                return;
+            }
+
+            $result = mysqli_query(
+                $db_conn,
+                "SELECT email FROM users WHERE id=".$sessionId
+            );
+
+            jsonResponse(json_encode(mysqli_fetch_all($result)[0]));
+            return;
+        }
     }
 
     if($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -200,6 +224,13 @@
             $hash = $_POST["hash"];
 
             Account::validate($hash);
+            return;
+        }
+        else if($action === "fetch_email" &&
+            isset($_POST["hash"]) && !empty($_POST["hash"])) {
+            $hash = $_POST["hash"];
+
+            Account::fetchEmail($hash);
             return;
         }
     }
