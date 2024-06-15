@@ -4,5 +4,5 @@
 
 Web-based schedule and task planning application. Commissioned by: [Lady Selene](https://www.instagram.com/lady.selenee/).
 
-> ![WARNING]
+> [!WARNING]
 > Will be discontinued.
