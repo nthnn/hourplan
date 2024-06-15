@@ -81,6 +81,24 @@ html.overflow-hidden, body.overflow-hidden {
     background-color: white !important;
 }
 
+.v-calendar-header button.v-btn {
+    border: 2px !important;
+    border-style: solid !important;
+    border-radius: 6px !important;
+    border-color: #f7ae81 !important;
+    background-color: white !important;
+}
+
+button.v-btn--variant-text {
+    margin-right: 6px !important;
+}
+
+.v-calendar-month__day {
+    min-height: 0% !important;
+    padding-bottom: 6px;
+    align-items: center;
+}
+
 .brdr-dark {
     border-color: black !important;
     border-width: 1px 1px 1px 1px !important;
