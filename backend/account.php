@@ -183,6 +183,94 @@
             jsonResponse(json_encode(mysqli_fetch_all($result)[0]));
             return;
         }
+
+        public static function changeInfo($hash, $username, $email) {
+            if(!validateUuid($hash)) {
+                respondFailed();
+                return;
+            }
+
+            global $db_conn;
+            $sessionId = getSessionUserId($hash);
+
+            if($sessionId < 0) {
+                respondError("Invalid session user ID.");
+                return;
+            }
+
+            if(!validateUsername($username)) {
+                respondError("Invalid username string.");
+                return;
+            }
+
+            if(!validateEmail($email)) {
+                respondError("Invalid email address string.");
+                return;
+            }
+
+            $result = mysqli_query(
+                $db_conn,
+                "UPDATE users SET username=\"".$username.
+                    "\", email=\"".$email."\" WHERE id=".$sessionId
+            );
+
+            if(!$result) {
+                respondError("Something went wrong.");
+                return;
+            }
+
+            respondOk();
+            return;
+        }
+
+        public static function changePassword($hash, $oldPassword, $newPassword) {
+            if(!validateUuid($hash)) {
+                respondFailed();
+                return;
+            }
+
+            global $db_conn;
+            $sessionId = getSessionUserId($hash);
+
+            if($sessionId < 0) {
+                respondError("Invalid session user ID.");
+                return;
+            }
+
+            if(!validatePassword($oldPassword)) {
+                respondError("Invalid old password string.");
+                return;
+            }
+
+            if(!validatePassword($newPassword)) {
+                respondError("Invalid new password string.");
+                return;
+            }
+
+            $result = mysqli_query(
+                $db_conn,
+                "SELECT * FROM users WHERE id=".$sessionId." AND password=\"".$oldPassword."\""
+            );
+
+            if(mysqli_num_rows($result) != 1) {
+                respondError("Invalid username and/or password.");
+                return;
+            }
+
+            $result = mysqli_query(
+                $db_conn,
+                "UPDATE users SET password=\"".$newPassword.
+                    "\" WHERE id=".$sessionId
+            );
+
+            if(!$result) {
+                respondError("Something went wrong.");
+                return;
+            }
+
+            respondOk();
+            return;
+        }
     }
 
     if($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -231,6 +319,28 @@
             $hash = $_POST["hash"];
 
             Account::fetchEmail($hash);
+            return;
+        }
+        else if($action === "change_info" &&
+            isset($_POST["hash"]) && !empty($_POST["hash"]) &&
+            isset($_POST["username"]) && !empty($_POST["username"]) &&
+            isset($_POST["email"]) && !empty($_POST["email"])) {
+            $hash = $_POST["hash"];
+            $username = $_POST["username"];
+            $email = $_POST["email"];
+
+            Account::changeInfo($hash, $username, $email);
+            return;
+        }
+        else if($action === "change_password" &&
+            isset($_POST["hash"]) && !empty($_POST["hash"]) &&
+            isset($_POST["oldpw"]) && !empty($_POST["oldpw"]) &&
+            isset($_POST["newpw"]) && !empty($_POST["newpw"])) {
+            $hash = $_POST["hash"];
+            $oldPassword = $_POST["oldpw"];
+            $newPassword = $_POST["newpw"];
+
+            Account::changePassword($hash, $oldPassword, $newPassword);
             return;
         }
     }
