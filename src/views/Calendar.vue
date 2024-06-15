@@ -5,33 +5,21 @@ import NewTaskModal from "../components/NewTaskModal.vue";
 
 <script lang="ts">
 import $ from "jquery";
+import env from "@/assets/scripts/config";
+import md5 from "md5";
+
 import { ref, type Ref } from "vue";
 import { VCalendar as VCalendarVuetify } from "vuetify/labs/VCalendar";
 
 import {
     validateCurrentSession
 } from "@/assets/scripts/session";
+import { toJSDate } from "@/assets/scripts/time";
 
+const prevCalendarHash: Ref<string> = ref("");
 const calendarData: Ref<any> = ref({
     today: [new Date()],
-    events: [
-        {
-            title: 'Weekly Meeting',
-            start: new Date('2024-06-03 09:00'),
-            end: new Date('2024-06-07 10:00'),
-        },
-        {
-            title: `Thomas' Birthday`,
-            start: new Date('2024-06-10'),
-            end: new Date('2024-06-10'),
-            allDay: true,
-        },
-        {
-            title: 'Mash Potatoes',
-            start: new Date('2019-01-09 12:30'),
-            end: new Date('2019-01-09 15:30'),
-        },
-    ]
+    events: []
 });
 
 export default {
@@ -44,6 +32,9 @@ export default {
 
         this.renderDateTime();
         setInterval(this.renderDateTime, 1000);
+
+        this.renderCalendarData();
+        setInterval(this.renderCalendarData, 2000);
     },
     methods: {
         renderDateTime(): void {
@@ -57,6 +48,29 @@ export default {
                         year: 'numeric'
                     } as any
                 )
+            );
+        },
+        renderCalendarData(): void {
+            $.post(
+                env.host + "/task.php",
+                {
+                    action: "calendar_data",
+                    session: localStorage.getItem("hash") as string
+                },
+                (data: any)=> {
+                    const dataHash: string = md5(data.toString());
+                    if(prevCalendarHash.value == dataHash)
+                        return;
+                    prevCalendarHash.value = dataHash;
+
+                    calendarData.value.events = [];
+                    for(let i of data)
+                        calendarData.value.events.push({
+                            title: atob(i.title),
+                            start: toJSDate(i.start),
+                            end: toJSDate(i.end)
+                        })
+                }
             );
         }
     }
