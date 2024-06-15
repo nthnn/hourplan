@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import $ from "jquery";
+import md5 from "md5";
+
 import { detectMobile } from '@/assets/scripts/mobile_detect';
 
 const showMessage = (id: string, message: string)=> {
@@ -42,6 +44,46 @@ function saveChanges() {
 }
 
 function changePassword() {
+    let oldPassword: string = $("#settings-old-password").val() as string,
+        newPassword: string = $("#settings-new-password").val() as string,
+        confirmPassword: string = $("#settings-confirm-password").val() as string;
+
+    hideMessage("change-pass-error");
+    hideMessage("change-pass-success");
+
+    if(newPassword != confirmPassword) {
+        showMessage(
+            "change-pass-error",
+            "New password and password confirmation did not match."
+        );
+        return;
+    }
+
+    $.post(
+        env.host + "/account.php",
+        {
+            action: "change_password",
+            hash: localStorage.getItem("hash") as string,
+            oldpw: md5(oldPassword),
+            newpw: md5(newPassword)
+        },
+        (data)=> {
+            if(data.status == 1) {
+                showMessage("change-pass-success", "Password changed!");
+                setTimeout(()=> {
+                    $("#settings-old-password").val("");
+                    $("#settings-new-password").val("");
+                    $("#settings-confirm-password").val("");
+
+                    hideMessage("change-pass-success");
+                }, 2000);
+
+                return;
+            }
+
+            showMessage("change-pass-error", data.error);
+        }
+    );
 }
 </script>
 
@@ -132,8 +174,15 @@ export default {
             </div>
         </div>
 
-        <div align="right">
-            <button type="button" class="btn outlined-secondary text-lato mt-2" @click="changePassword">Change Password</button>
+        <div class="row">
+            <div class="col-6">
+                <p class="d-none text-danger text-lato" id="change-pass-error"></p>
+                <p class="d-none text-info text-lato" id="change-pass-success"></p>
+            </div>
+
+            <div class="col-6" align="right">
+                <button type="button" class="btn outlined-secondary text-lato mt-2" @click="changePassword">Change Password</button>
+            </div>
         </div>
     </div>
     <br/>
