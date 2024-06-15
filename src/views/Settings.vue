@@ -4,6 +4,7 @@ import env from "@/assets/scripts/config";
 import Navbar from "../components/Navbar.vue";
 
 import AccountSettings from "@/components/AccountSettings.vue";
+import AboutUsSettings from "@/components/AboutUsSettings.vue";
 
 import { ref, type Ref } from "vue";
 import { detectMobile } from "@/assets/scripts/mobile_detect";
@@ -11,6 +12,7 @@ import { detectMobile } from "@/assets/scripts/mobile_detect";
 const showAccountSettings: Ref<boolean> = ref(true),
     showNotificationsSettings: Ref<boolean> = ref(false),
     showThemesSettings: Ref<boolean> = ref(false),
+    showAboutUsSettings: Ref<boolean> = ref(false),
     showSettingsNav: Ref<boolean> = ref(true);
 const pageTitle: Ref<string> = ref("");
 
@@ -20,6 +22,7 @@ function accountSettings(): void {
     showAccountSettings.value = true;
     showNotificationsSettings.value = false;
     showThemesSettings.value = false;
+    showAboutUsSettings.value = false;
 
     if(detectMobile())
         showSettingsNav.value = false;
@@ -31,6 +34,7 @@ function notificationSettings(): void {
     showAccountSettings.value = false;
     showNotificationsSettings.value = true;
     showThemesSettings.value = false;
+    showAboutUsSettings.value = false;
 
     if(detectMobile())
         showSettingsNav.value = false;
@@ -42,6 +46,19 @@ function themeSettings(): void {
     showAccountSettings.value = false;
     showNotificationsSettings.value = false;
     showThemesSettings.value = true;
+    showAboutUsSettings.value = false;
+
+    if(detectMobile())
+        showSettingsNav.value = false;
+}
+
+function aboutUsSettings(): void {
+    pageTitle.value = "About Us";
+
+    showAccountSettings.value = false;
+    showNotificationsSettings.value = false;
+    showThemesSettings.value = false;
+    showAboutUsSettings.value = true;
 
     if(detectMobile())
         showSettingsNav.value = false;
@@ -53,6 +70,7 @@ function settingsGoBack(): void {
     showAccountSettings.value = false;
     showNotificationsSettings.value = false;
     showThemesSettings.value = false;
+    showAboutUsSettings.value = false;
     showSettingsNav.value = true;
 }
 
@@ -109,6 +127,9 @@ export default {
                     <button v-if="showThemesSettings" class="clr-secondary border-none py-1 rounded text-dark text-lato px-2 w-100 mt-2" @click="themeSettings">Theme</button>
                     <button v-else class="clr-enabled border-none py-1 rounded text-dark text-lato px-2 w-100 mt-2" @click="themeSettings">Theme</button>
 
+                    <button v-if="showAboutUsSettings" class="clr-secondary border-none py-1 rounded text-dark text-lato px-2 w-100 mt-2" @click="aboutUsSettings">About Us</button>
+                    <button v-else class="clr-enabled border-none py-1 rounded text-dark text-lato px-2 w-100 mt-2" @click="aboutUsSettings">About Us</button>
+
                     <div class="desktop-only">
                         <br/><br/><br/><br/><br/><br/>
                     </div>
@@ -136,6 +157,7 @@ export default {
                 <AccountSettings v-if="showAccountSettings" />
                 <NotificationSettings v-if="showNotificationsSettings" />
                 <ThemeSettings v-if="showThemesSettings" />
+                <AboutUsSettings v-if="showAboutUsSettings" />
             </div>
         </div>
 
@@ -143,6 +165,7 @@ export default {
             <AccountSettings v-if="showAccountSettings" />
             <NotificationSettings v-if="showNotificationsSettings" />
             <ThemeSettings v-if="showThemesSettings" />
+            <AboutUsSettings v-if="showAboutUsSettings" />
         </div>
     </div>
 </template>
