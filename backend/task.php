@@ -198,9 +198,14 @@
         }
 
         public static function fetchTodaysTasks($session, $type, $isFinished) {
-            global $db_conn;
+            if(!validateUuid($session)) {
+                respondFailed();
+                return;
+            }
 
+            global $db_conn;
             $sessionId = getSessionUserId($session);
+
             if($sessionId < 0) {
                 respondError("Invalid session user ID.");
                 return;
@@ -252,9 +257,14 @@
         }
 
         public static function highlightableDates($session) {
-            global $db_conn;
+            if(!validateUuid($session)) {
+                respondFailed();
+                return;
+            }
 
+            global $db_conn;
             $sessionId = getSessionUserId($session);
+
             if($sessionId < 0) {
                 respondError("Invalid session user ID.");
                 return;
@@ -282,9 +292,14 @@
         }
 
         public static function markTask($session, $id, $finished) {
-            global $db_conn;
+            if(!validateUuid($session)) {
+                respondFailed();
+                return;
+            }
 
+            global $db_conn;
             $sessionId = getSessionUserId($session);
+
             if($sessionId < 0) {
                 respondError("Invalid session user ID.");
                 return;
