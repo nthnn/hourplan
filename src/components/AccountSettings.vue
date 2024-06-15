@@ -1,5 +1,34 @@
 <script setup lang="ts">
+import $ from "jquery";
 import { detectMobile } from '@/assets/scripts/mobile_detect';
+
+function saveChanges() {
+    let username: string = $("#settings-username").val() as string,
+        email: string = $("#settings-email").val() as string;
+}
+
+function changePassword() {
+}
+</script>
+
+<script lang="ts">
+import env from "@/assets/scripts/config";
+
+export default {
+    mounted() {
+        $.post(
+                env.host + "/account.php",
+                {
+                    action: "fetch_email",
+                    hash: localStorage.getItem("hash") as string
+                },
+                (data: any)=> {
+                    $("#settings-username").val(localStorage.getItem("username") as string);
+                    $("#settings-email").val(data[0]);
+                }
+        );
+    }
+}
 </script>
 
 <template>
@@ -28,7 +57,7 @@ import { detectMobile } from '@/assets/scripts/mobile_detect';
         </div>
 
         <div align="right">
-            <button type="button" class="btn outlined-secondary text-lato mt-2">Save Changes</button>
+            <button type="button" class="btn outlined-secondary text-lato mt-2" @click="saveChanges">Save Changes</button>
         </div>
         <hr/>
 
@@ -63,7 +92,7 @@ import { detectMobile } from '@/assets/scripts/mobile_detect';
         </div>
 
         <div align="right">
-            <button type="button" class="btn outlined-secondary text-lato mt-2">Change Password</button>
+            <button type="button" class="btn outlined-secondary text-lato mt-2" @click="changePassword">Change Password</button>
         </div>
     </div>
     <br/>
