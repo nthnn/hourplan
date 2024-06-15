@@ -15,6 +15,13 @@ import {
 import { toJSDate } from "@/assets/scripts/time";
 
 export default {
+    data() {
+        return {
+            happyCat: "./images/cat-happy-" + (localStorage.getItem("theme") as string) + ".png",
+            dates: [] as Array<Array<Date>>,
+            calendarAttr: [] as Array<any>
+        }
+    },
     created() {
         this.renderDateTime();
         this.renderHighlightedDates();
@@ -28,12 +35,6 @@ export default {
         this.renderDateTime();
         this.renderHighlightedDates();
         this.renderTodoList();
-    },
-    data() {
-        return {
-            dates: [] as Array<Array<Date>>,
-            calendarAttr: [] as Array<any>
-        }
     },
     methods: {
         renderDateTime(): void {
@@ -147,7 +148,7 @@ export default {
 
                     <div id="sched-no-list" class="d-none" align="center">
                         <br/>
-                        <img src="@/assets/images/cat-delighted.png" width="150" />
+                        <img :src="happyCat" width="150" />
                         <p>No schedules in range!</p>
                     </div>
 
@@ -162,7 +163,7 @@ export default {
 
                     <div id="todo-no-list" class="d-none" align="center">
                         <br/>
-                        <img src="@/assets/images/cat-delighted.png" width="120" />
+                        <img :src="happyCat" width="120" />
                         <p>No task in range!</p>
                     </div>
 
