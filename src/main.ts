@@ -4,12 +4,16 @@ import Application from "./App.vue";
 import router from "./router";
 import VCalendar from 'v-calendar';
 
-import 'v-calendar/style.css';
+import "v-calendar/style.css";
+import "@mdi/font/css/materialdesignicons.css";
+import "material-design-icons/iconfont/material-icons.css";
+import "material-design-icons-iconfont/dist/material-design-icons.css";
+
 import "../node_modules/bootswatch/dist/lumen/bootstrap.min.css";
 import "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
 
 import "vuetify/styles";
-import { createVuetify, type VuetifyOptions } from 'vuetify';
+import { createVuetify, type VuetifyOptions } from "vuetify";
 import * as VuetifyComponents from "vuetify/components";
 import * as VuetifyDirectives from "vuetify/directives";
 
