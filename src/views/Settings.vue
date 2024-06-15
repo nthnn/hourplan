@@ -125,10 +125,6 @@ export default {
 
                         <div class="col-9">
                             <h3 class="mt-1">{{ pageTitle }}</h3>
-
-                            <AccountSettings v-if="showAccountSettings" />
-                            <NotificationSettings v-if="showNotificationsSettings" />
-                            <ThemeSettings v-if="showThemesSettings" />
                         </div>
                     </div>
                 </div>
@@ -141,6 +137,12 @@ export default {
                 <NotificationSettings v-if="showNotificationsSettings" />
                 <ThemeSettings v-if="showThemesSettings" />
             </div>
+        </div>
+
+        <div v-if="detectMobile() && !showSettingsNav">
+            <AccountSettings v-if="showAccountSettings" />
+            <NotificationSettings v-if="showNotificationsSettings" />
+            <ThemeSettings v-if="showThemesSettings" />
         </div>
     </div>
 </template>
