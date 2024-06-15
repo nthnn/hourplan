@@ -13,6 +13,11 @@ import {
 import TaskList from "@/components/TaskList.vue";
 
 export default {
+    data() {
+        return {
+            happyCat: "./images/cat-happy-" + (localStorage.getItem("theme") as string) + ".png"
+        }
+    },
     created() {
         validateCurrentSession();
         setInterval(validateCurrentSession, 1000);
@@ -84,7 +89,7 @@ export default {
 
         <div id="list-no-task" class="d-none" align="center">
             <br/>
-            <img src="@/assets/images/cat-delighted.png" width="150" />
+            <img :src="happyCat" width="150" />
             <p>To-do list has no tasks yet!</p>
         </div>
 
