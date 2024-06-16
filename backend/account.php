@@ -271,6 +271,39 @@
             respondOk();
             return;
         }
+
+        public static function changeTheme($hash, $theme) {
+            if(!validateUuid($hash)) {
+                respondFailed();
+                return;
+            }
+
+            global $db_conn;
+            $sessionId = getSessionUserId($hash);
+
+            if($sessionId < 0) {
+                respondError("Invalid session user ID.");
+                return;
+            }
+
+            if(!validateNumber($theme)) {
+                respondError("Invalid new theme value.");
+                return;
+            }
+
+            $result = mysqli_query(
+                $db_conn,
+                "UPDATE users SET theme=".$theme." WHERE id=".$sessionId
+            );
+
+            if(!$result) {
+                respondError("Something went wrong.");
+                return;
+            }
+
+            respondOk();
+            return;
+        }
     }
 
     if($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -341,6 +374,15 @@
             $newPassword = $_POST["newpw"];
 
             Account::changePassword($hash, $oldPassword, $newPassword);
+            return;
+        }
+        else if($action === "change_theme" &&
+            isset($_POST["hash"]) && !empty($_POST["hash"]) &&
+            isset($_POST["theme"]) && !empty($_POST["theme"])) {
+            $hash = $_POST["hash"];
+            $theme = $_POST["theme"];
+
+            Account::changeTheme($hash, $theme);
             return;
         }
     }
