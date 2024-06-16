@@ -9,13 +9,13 @@ export default {
 <template>
     <div v-if="show" class="container">
         <h1>Gallery</h1>
-    </div>
 
-    <button class="floating-btn shadow">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="5.0" stroke="currentColor" width="18" height="18" class="mb-1">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-        </svg>
-    </button>
+        <button class="floating-btn shadow">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="5.0" stroke="currentColor" width="18" height="18" class="mb-1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+        </button>
+    </div>
 </template>
 
 <style scoped>
