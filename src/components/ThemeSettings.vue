@@ -5,6 +5,7 @@ import env from "@/assets/scripts/config";
 import { detectMobile } from '@/assets/scripts/mobile_detect';
 import { ref, type Ref } from 'vue';
 
+const publicPath: string = env.host.split("/")[0] + "/";
 const currentTheme: string = localStorage.getItem("theme") as string;
 const showAlaska: Ref<boolean> = ref(currentTheme == "0"),
     showCharcole: Ref<boolean> = ref(currentTheme == "1"),
@@ -106,17 +107,17 @@ function changeTheme() {
         <div v-if="showAlaska">
             <div class="row mt-2">
                 <div class="col-4" align="center">
-                    <img src="../../images/cat-delighted-0.png" width="100%" />
+                    <img :src="`${publicPath}images/cat-delighted-0.png`" width="100%" />
                     <p>Sleeping Alaska</p>
                 </div>
 
                 <div class="col-4" align="center">
-                    <img src="../../images/cat-happy-0.png" width="100%" />
+                    <img :src="`${publicPath}images/cat-happy-0.png`" width="100%" />
                     <p>Happy Alaska</p>
                 </div>
 
                 <div class="col-4" align="center">
-                    <img src="../../images/cat-crying-0.png" width="100%" />
+                    <img :src="`${publicPath}images/cat-crying-0.png`" width="100%" />
                     <p>Crying Alaska</p>
                 </div>
             </div>
@@ -124,17 +125,17 @@ function changeTheme() {
         <div v-if="showCharcole">
             <div class="row mt-2">
                 <div class="col-4" align="center">
-                    <img src="../../images/cat-delighted-1.png" width="100%" />
+                    <img :src="`${publicPath}images/cat-delighted-1.png`" width="100%" />
                     <p>Sleeping Charcole</p>
                 </div>
 
                 <div class="col-4" align="center">
-                    <img src="../../images/cat-happy-1.png" width="100%" />
+                    <img :src="`${publicPath}images/cat-happy-1.png`" width="100%" />
                     <p>Happy Charcole</p>
                 </div>
 
                 <div class="col-4" align="center">
-                    <img src="../../images/cat-crying-1.png" width="100%" />
+                    <img :src="`${publicPath}images/cat-crying-1.png`" width="100%" />
                     <p>Crying Charcole</p>
                 </div>
             </div>
@@ -142,17 +143,17 @@ function changeTheme() {
         <div v-if="showTabby">
             <div class="row mt-2">
                 <div class="col-4" align="center">
-                    <img src="../../images/cat-delighted-2.png" width="100%" />
+                    <img :src="`${publicPath}images/cat-delighted-2.png`" width="100%" />
                     <p>Sleeping Tabby</p>
                 </div>
 
                 <div class="col-4" align="center">
-                    <img src="../../images/cat-happy-2.png" width="100%" />
+                    <img :src="`${publicPath}images/cat-happy-2.png`" width="100%" />
                     <p>Happy Tabby</p>
                 </div>
 
                 <div class="col-4" align="center">
-                    <img src="../../images/cat-crying-2.png" width="100%" />
+                    <img :src="`${publicPath}images/cat-crying-2.png`" width="100%" />
                     <p>Crying Tabby</p>
                 </div>
             </div>
