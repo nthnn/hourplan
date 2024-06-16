@@ -144,12 +144,12 @@ export default {
 
                     <div id="class-sched-loading" align="center">
                         <br/>
-                        <img src="@/assets/images/cat-loading.gif" width="150" />
+                        <img src="@/assets/images/cat-loading.gif" width="120" />
                     </div>
 
                     <div id="sched-no-list" class="d-none" align="center">
                         <br/>
-                        <img :src="happyCat" width="150" />
+                        <img :src="happyCat" width="120" />
                         <p>No schedules in range!</p>
                     </div>
 
