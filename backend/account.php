@@ -378,7 +378,7 @@
         }
         else if($action === "change_theme" &&
             isset($_POST["hash"]) && !empty($_POST["hash"]) &&
-            isset($_POST["theme"]) && !empty($_POST["theme"])) {
+            isset($_POST["theme"]) && $_POST["theme"] != "") {
             $hash = $_POST["hash"];
             $theme = $_POST["theme"];
 
