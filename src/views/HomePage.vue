@@ -132,13 +132,14 @@ export default {
 
         <div class="container">
             <div class="row">
-                <div class="col-6">
+                <div class="col-lg-6">
                     <VDatePicker
                         class="w-100 border-dark date-picker"
                         :attributes="calendarAttr" />
                 </div>
 
-                <div class="col-6">
+                <div class="col-lg-6">
+                    <br class="mobile-only" />
                     <h4 class="pb-2">Class Schedule</h4>
 
                     <div id="class-sched-loading" align="center">
