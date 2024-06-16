@@ -10,6 +10,7 @@ import { toUNIX } from "@/assets/scripts/time";
 export default {
     props: {
         apiAction: {type: String},
+        finished: {type: Boolean, default: false},
         large: {type: Boolean, default: false}
     },
     components: {
@@ -94,9 +95,22 @@ export default {
                             .addClass("d-none");
                     }
 
+                    if(this.finished) {
+                        this.tasks = this.tasks.filter(arr => arr[10] === "1");
+                        if(this.tasks.length == 0)
+                            $("#no-finished-tasks")
+                                .removeClass("d-none")
+                                .addClass("d-block");
+                        else $("#no-finished-tasks")
+                            .removeClass("d-block")
+                            .addClass("d-none");
+                    }
+
                     const currentUNIXstamp: number = toUNIX(new Date());
                     for(let i = 0; i < this.tasks.length; i++)
-                        if(currentUNIXstamp > parseInt(this.tasks[i][4]) && this.tasks[i][10] !== '1')
+                        if(currentUNIXstamp > parseInt(this.tasks[i][4]) &&
+                            this.tasks[i][10] !== '1' &&
+                            !this.finished)
                             this.emotions[i] = "crying";
                         else this.emotions[i] = (["happy", "delighted"] as Array<string>)
                             [Math.round(Math.random())];
